@@ -24,4 +24,5 @@ urlpatterns = [
     path('', include(account.urls)),
 
     path('', core.views.home_page, name='home_page'),
+    path('dashboard/', core.views.dashboard, name='dashboard'),
 ]

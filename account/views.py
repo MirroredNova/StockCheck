@@ -15,7 +15,7 @@ def log_in(request):
             user = authenticate(username=username, password=password)
             if user:
                 login(request, user)
-                return redirect('/')
+                return redirect('/dashboard')
     else:
         form = LogInForm()
 
@@ -28,7 +28,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/dashboard')
     else:
         form = CreateUserForm()
     return render(request, 'signup.html', {
@@ -39,3 +39,7 @@ def signup(request):
 def log_out(request):
     logout(request)
     return redirect("/")
+
+
+def management(request):
+    return render(request, 'management.html')

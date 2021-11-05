@@ -8,7 +8,7 @@ class Products(models.Model):
     current_stock = models.BooleanField()
     current_price = models.DecimalField(decimal_places=2,max_digits=20)
     last_updated = models.TimeField()
-    product_id = models.IntegerField()
+    product_id = models.CharField(max_length=30)
     product_name = models.CharField(max_length=200)
 
 

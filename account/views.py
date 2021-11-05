@@ -1,7 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from account.forms import CreateUserForm, LogInForm
+from account.forms import *
 from django.contrib.auth import login, authenticate, logout
+from django.contrib import messages
 
 
 def log_in(request):
@@ -41,5 +43,29 @@ def log_out(request):
     return redirect("/")
 
 
+@login_required(login_url='/login/')
 def management(request):
-    return render(request, 'management.html')
+    intial_vals = {'first_name': request.user.first_name,
+                   'last_name': request.user.last_name,
+                   'email': request.user.email,
+                   'phone': request.user.phone,
+                   'discord': request.user.discord}
+
+    if request.method == 'POST':
+        form = AccountManagementForm(request.POST, initial=intial_vals)
+        if form.is_valid():
+            fs = form.save(commit=False)
+            u = User.objects.get(username=request.user.username)
+            u.first_name = fs.first_name
+            u.last_name = fs.last_name
+            u.email = fs.email
+            u.phone = fs.phone
+            u.discord = fs.discord
+            u.save()
+            messages.info(request, 'Your information has been changed successfully!')
+            return HttpResponseRedirect('/management/')
+    else:
+        form = AccountManagementForm(initial=intial_vals)
+    return render(request, 'management.html', {
+        'form': form,
+    })

@@ -29,6 +29,7 @@
     <a href="/dashboard/">Dashboard</a>
     <a href="/management/">Account Management</a>
     <a href="/logout/">Logout</a>
+    <p style="display:inline">Signed in as: {{ user.get_username }}</p>
     {% endif %}
 </nav>
 {% endblock %}
@@ -36,7 +37,5 @@
 {% block content %}
 
 {% endblock %}
-
-<p>Welcome, {{ user.get_username }}.</p>
 </body>
 </html>

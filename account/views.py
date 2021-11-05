@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from account.forms import *
 from django.contrib.auth import login, authenticate, logout
+from django.contrib import messages
 
 
 def log_in(request):
@@ -61,6 +62,7 @@ def management(request):
             u.phone = fs.phone
             u.discord = fs.discord
             u.save()
+            messages.info(request, 'Your information has been changed successfully!')
             return HttpResponseRedirect('/management/')
     else:
         form = AccountManagementForm(initial=intial_vals)

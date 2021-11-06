@@ -18,6 +18,8 @@ def log_in(request):
             if user:
                 login(request, user)
                 return redirect('/dashboard')
+            else:
+                messages.info(request, 'That user doesn\'t exist or the password is incorrect.')
     else:
         form = LogInForm()
 
@@ -45,14 +47,14 @@ def log_out(request):
 
 @login_required(login_url='/login/')
 def management(request):
-    intial_vals = {'first_name': request.user.first_name,
+    initial_vals = {'first_name': request.user.first_name,
                    'last_name': request.user.last_name,
                    'email': request.user.email,
                    'phone': request.user.phone,
                    'discord': request.user.discord}
 
     if request.method == 'POST':
-        form = AccountManagementForm(request.POST, initial=intial_vals)
+        form = AccountManagementForm(request.POST, initial=initial_vals)
         if form.is_valid():
             fs = form.save(commit=False)
             u = User.objects.get(username=request.user.username)
@@ -65,7 +67,7 @@ def management(request):
             messages.info(request, 'Your information has been changed successfully!')
             return HttpResponseRedirect('/management/')
     else:
-        form = AccountManagementForm(initial=intial_vals)
+        form = AccountManagementForm(initial=initial_vals)
     return render(request, 'management.html', {
         'form': form,
     })

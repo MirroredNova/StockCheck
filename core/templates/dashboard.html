@@ -5,5 +5,130 @@ Dashboard
 {% endblock %}
 
 {% block content %}
-<h1>Dashboard</h1>
+<!-- <h1>Dashboard</h1> -->
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        color: white;
+        box-sizing: border-box;
+        font-family: monospace;
+        font-size: 15px;
+      }
+      .grid-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 50px 1fr 50px;
+
+        grid-template-areas:
+          'header'
+          'main'
+          'footer';
+        height: 25vh;
+      }
+
+      .header {
+        grid-area: header;
+        background-color: whitesmoke;
+      }
+
+      .main {
+        grid-area: main;
+        background-color: white;
+      }
+
+      /* flexing header and footer*/
+      .header,
+      .footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: darkblue;
+        padding: 1 15px;
+      }
+
+      /* Layout for main content overview  and its cards*/
+      .main_overview {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        border-bottom: 1px solid blue;
+      }
+      .overview_card {
+        flex-basis: 250px;
+        flex-grow: 1;
+        margin: 10px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
+        background-color: #9bcef0;
+        height: 100px;
+        border: 1px solid powderblue;
+        border-radius: 4px;
+        color: darkblue;
+      }
+
+      .header_search {
+        margin-left: 20px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="grid-container">
+      <div class="menu-icon">
+        <strong> &#9776;</strong>
+      </div>
+      <header class="header">
+        <div class="header_search">Search...</div>
+        <!-- <div class="header_avatar">Logout</div> -->
+      </header>
+      <main class="main">
+        <div class="main_overview">
+          <div class="overview_card">
+            <div class="overview_card-info">Overview</div>
+            <div class="overview_card-icon">Card</div>
+          </div>
+          <div class="overview_card">
+            <div class="overview_card-info">Overview</div>
+            <div class="overview_card-icon">Card</div>
+          </div>
+          <div class="overview_card">
+            <div class="overview_card-info">Overview</div>
+            <div class="overview_card-icon">Card</div>
+          </div>
+          <div class="overview_card">
+            <div class="overview_card-info">Overview</div>
+            <div class="overview_card-icon">Card</div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script type="text/javascript">
+      const menuIcon = document.querySelector('.menu-icon');
+      const aside = document.querySelector('.aside');
+      const asideClose = document.querySelector('.aside_close-icon');
+
+      function toggle(el, className) {
+        if (el.classList.contains(className)) {
+          el.classList.remove(className);
+        } else {
+          el.classList.add(className);
+        }
+      }
+
+      menuIcon.addEventListener('click', function() {
+        toggle(aside, 'active');
+      });
+
+      asideClose.addEventListener('click', function() {
+        toggle(aside, 'active');
+      });
+    </script>
+  </body>
 {% endblock %}

@@ -15,30 +15,40 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
+
 <body>
+    <div id='container'>
+        {% block header %}
+    <div id="headerLink">
+        <h1><a href="/">StockCheck </a></h1>
+    </div>
+    {% endblock %}
 
-{% block header %}
-<div id="headerLink">
-    <h1><a href="/">StockCheck </a></h1>
-</div>
-{% endblock %}
+    {% block nav %}
+    <nav>
+        {% if not user.is_authenticated %}
+        <div class='outer'>
+            <a class='inner' href="/login/">Login</a>
+            <a class='inner' href="/signup/">Create Account</a>
+        </div>
+        {% elif user.is_authenticated %}
+        <div class='outer'>
+            <a class='inner' href="/dashboard/">Dashboard</a>
+            <a class='inner' href="/management/">Account Management</a>
+            <a class='inner' href="/logout/">Logout</a>
+            <p style='display:inline' id='signedin'>Signed in as: {{ user.get_username }}</p>
+        </div>
 
-{% block nav %}
-<nav>
-    {% if not user.is_authenticated %}
-    <a href="/login/">Login</a>
-    <a href="/signup/">Create Account</a>
-    {% elif user.is_authenticated %}
-    <a href="/dashboard/">Dashboard</a>
-    <a href="/management/">Account Management</a>
-    <a href="/logout/">Logout</a>
-    <p style="display:inline">Signed in as: {{ user.get_username }}</p>
-    {% endif %}
-</nav>
-{% endblock %}
+        {% endif %}
+    </nav>
+    {% endblock %}
 
-{% block content %}
+    {% block content %}
 
-{% endblock %}
+    {% endblock %}
+    </div>
+
 </body>
+
+
 </html>

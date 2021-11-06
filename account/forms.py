@@ -1,13 +1,11 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import User
-from phonenumber_field.formfields import PhoneNumberField
 
 
 class CreateUserForm(UserCreationForm):
 
     class Meta(UserCreationForm):
-        phone = PhoneNumberField()
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'discord')
 
@@ -24,7 +22,7 @@ class AccountManagementForm(forms.ModelForm):
     first_name = forms.CharField()
     last_name = forms.CharField()
     email = forms.EmailField()
-    phone = PhoneNumberField()
+    phone = forms.CharField()
     discord = forms.CharField()
 
     class Meta:

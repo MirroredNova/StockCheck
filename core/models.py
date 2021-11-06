@@ -3,6 +3,7 @@ from account.models import User
 
 # Create your models here.
 
+
 class Products(models.Model):
     supplier = models.CharField(max_length=200)
     current_stock = models.BooleanField()
@@ -17,6 +18,7 @@ class UserProducts(models.Model):
     product_name = models.OneToOneField(Products,on_delete=models.CASCADE)
     notification_interval = models.CharField(max_length=200)
     notification_method = models.CharField(max_length=200)
+
 
 class NotificationQueue(models.Model):
     id = models.AutoField(primary_key=True)

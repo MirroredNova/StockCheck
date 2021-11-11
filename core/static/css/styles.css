@@ -1,5 +1,5 @@
 body {
-    background-color: #DBF9FC;
+    background-color: #eeeeee;
 }
 
 a:hover {
@@ -81,3 +81,5 @@ select {
     padding:10px;
     border-radius:10px;
 }
+
+th.required { font-weight: bold; }

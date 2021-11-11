@@ -6,11 +6,9 @@ Account Management
 
 {% block content %}
 <h1>Account Management</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-</form>
+<hr/>
+<p><b>*</b> fields are required!</p>
+{% include "account_forms.html" with form=form submittext="Save" includereq=True %}
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -18,4 +16,7 @@ Account Management
     {% endfor %}
 </ul>
 {% endif %}
+<br/>
+<h6>To reset your password, click the following button:</h6>
+<a href="/management/password_change"><button type="submit">Password Reset</button></a>
 {% endblock %}

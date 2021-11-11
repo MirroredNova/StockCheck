@@ -16,17 +16,7 @@ class LogInForm(forms.Form):
 
 
 class AccountManagementForm(forms.ModelForm):
-    # def __init__(self, user, *args, **kwargs):
-    #     self.user = user
-    #     super(AccountManagementForm, self).__init__(*args, **kwargs)
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    email = forms.EmailField()
-    phone = forms.CharField()
-    discord = forms.CharField()
 
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email', 'phone', 'discord']
-
-

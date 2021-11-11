@@ -9,9 +9,8 @@ Login
 {% endblock %}
 
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign up</button>
-</form>
+<h1>Account Registration</h1>
+<hr/>
+<p><b>*</b> fields are required!</p>
+{% include "account_forms.html" with form=form submittext="Sign Up" includereq=True %}
 {% endblock %}

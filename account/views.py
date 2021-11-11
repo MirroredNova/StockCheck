@@ -1,9 +1,11 @@
+from django.contrib import messages
+from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+
 from account.forms import *
-from django.contrib.auth import login, authenticate, logout
-from django.contrib import messages
 
 
 def log_in(request):
@@ -48,10 +50,10 @@ def log_out(request):
 @login_required(login_url='/login/')
 def management(request):
     initial_vals = {'first_name': request.user.first_name,
-                   'last_name': request.user.last_name,
-                   'email': request.user.email,
-                   'phone': request.user.phone,
-                   'discord': request.user.discord}
+                    'last_name': request.user.last_name,
+                    'email': request.user.email,
+                    'phone': request.user.phone,
+                    'discord': request.user.discord}
 
     if request.method == 'POST':
         form = AccountManagementForm(request.POST, initial=initial_vals)
@@ -70,4 +72,20 @@ def management(request):
         form = AccountManagementForm(initial=initial_vals)
     return render(request, 'management.html', {
         'form': form,
+    })
+
+
+def password_change(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            return redirect('/management/')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'password_management/password_change.html', {
+        'form': form
     })

@@ -141,3 +141,6 @@ AUTH_USER_MODEL = 'account.User'
 
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/dashboard'
+
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))

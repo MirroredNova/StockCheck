@@ -4,3 +4,6 @@ pip3 install -r requirements.txt
 
 Then you can start the app with 
 python3 manage.py runserver
+
+Then start the scraper in another terminal window
+python3 scraper_service.py

@@ -20,7 +20,7 @@
     <div id='container'>
         {% block header %}
     <div id="headerLink">
-        <h1><a href="/">StockCheck </a></h1>
+        <h1><a href="{% url 'home_page' %}">StockCheck </a></h1>
     </div>
     {% endblock %}
 
@@ -28,14 +28,14 @@
     <nav>
         {% if not user.is_authenticated %}
         <div class='outer'>
-            <a class='inner' href="/login/">Login</a>
-            <a class='inner' href="/signup/">Create Account</a>
+            <a class='inner' href="{% url 'login' %}">Login</a>
+            <a class='inner' href="{% url 'signup' %}">Create Account</a>
         </div>
         {% elif user.is_authenticated %}
         <div class='outer'>
-            <a class='inner' href="/dashboard/">Dashboard</a>
-            <a class='inner' href="/management/">Account Management</a>
-            <a class='inner' href="/logout/">Logout</a>
+            <a class='inner' href="{% url 'dashboard' %}">Dashboard</a>
+            <a class='inner' href="{% url 'management' %}">Account Management</a>
+            <a class='inner' href="{% url 'logout' %}">Logout</a>
             <p style='display:inline' id='signedin'>Signed in as: {{ user.get_username }}</p>
         </div>
 

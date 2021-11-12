@@ -5,18 +5,14 @@ Account Management
 {% endblock %}
 
 {% block content %}
+
 <h1>Account Management</h1>
 <hr/>
 <p><b>*</b> fields are required!</p>
+{% include "message_form_block.html" with messages=messages %}
 {% include "account_forms.html" with form=form submittext="Save" includereq=True %}
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
 <br/>
 <h6>To reset your password, click the following button:</h6>
-<a href="/management/password_change"><button type="submit">Password Reset</button></a>
+<a href="{% url 'password_change' %}"><button type="submit">Password Reset</button></a>
+
 {% endblock %}

@@ -17,11 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 import account.urls
 import core.views
+import products.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', include(account.urls)),
+    path('', include(products.urls)),
 
     path('', core.views.home_page, name='home_page'),
     path('dashboard/', core.views.dashboard, name='dashboard'),

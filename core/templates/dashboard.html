@@ -27,7 +27,7 @@ Dashboard
         grid-template-areas:
           'header'
           'main'
-          'footer';
+          'footer';0
         height: 25vh;
       }
 
@@ -80,13 +80,10 @@ Dashboard
     </style>
   </head>
   <body>
+    <a href="{% url 'choose_supplier' %}"><button type="submit">Create New Item</button></a>
     <div class="grid-container">
-      <div class="menu-icon">
-        <strong> &#9776;</strong>
-      </div>
       <header class="header">
         <div class="header_search">Your items</div>
-        <!-- <div class="header_avatar">Logout</div> -->
       </header>
       <main class="main">
         <div class="main_overview">
@@ -107,26 +104,6 @@ Dashboard
         </div>
        </div>
       </main>
-    <script type="text/javascript">
-      const menuIcon = document.querySelector('.menu-icon');
-      const aside = document.querySelector('.aside');
-      const asideClose = document.querySelector('.aside_close-icon');
-
-      function toggle(el, className) {
-        if (el.classList.contains(className)) {
-          el.classList.remove(className);
-        } else {
-          el.classList.add(className);
-        }
-      }
-
-      menuIcon.addEventListener('click', function() {
-        toggle(aside, 'active');
-      });
-
-      asideClose.addEventListener('click', function() {
-        toggle(aside, 'active');
-      });
-    </script>
+    </div>
   </body>
 {% endblock %}

@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     'core',
     'account',
+    'notifications',
+    'products',
 ]
 
 MIDDLEWARE = [

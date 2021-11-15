@@ -1,15 +1,14 @@
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from datetime import datetime
 from products.forms import CreateDashboardBlockSupplier, CreateDashboardBlockAmazon
-from products.models import Product, UserProduct, Supplier
+from products.models import Product, UserProduct
 
 
 def choose_supplier(request):
     if request.method == 'POST':
         form = CreateDashboardBlockSupplier(request.POST)
         if form.is_valid():
-            supplier = form.cleaned_data['supplier'].supplier
+            supplier = form.cleaned_data['supplier']
             request.session['chosen_supplier'] = supplier
             return redirect('/choose_product/')
     else:
@@ -34,9 +33,7 @@ def choose_product(request):
             now = datetime.now()
             current_time = now.strftime("%H:%M:%S")
 
-            s = Supplier(supplier=supplier)
-
-            product.supplier = s
+            product.supplier = supplier
             product.current_stock = False  # should be initialized to the initial check result
             product.current_price = 0  # should be initialized to the initial check result
             product.last_updated = current_time

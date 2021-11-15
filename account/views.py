@@ -67,7 +67,7 @@ def management(request):
             u.discord = fs.discord
             u.save()
             messages.info(request, 'Your information has been changed successfully!')
-            return HttpResponseRedirect('/management/')
+            return redirect('/management/')
     else:
         form = AccountManagementForm(initial=initial_vals)
     return render(request, 'management.html', {

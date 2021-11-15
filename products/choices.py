@@ -1,3 +1,10 @@
+AMAZON = 'Amazon'
+BEST_BUY = 'Best Buy'
+SUPPLIERS = [
+        (AMAZON, 'Amazon'),
+        (BEST_BUY, 'Best Buy')
+]
+
 FAST = 'Fast'
 MED = 'Medium'
 SLOW = 'Slow'

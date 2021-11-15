@@ -2,10 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from datetime import datetime
 from products.forms import CreateDashboardBlockSupplier, CreateDashboardBlockAmazon
-
-
-# Create your views here.
-from products.models import Product, UserProduct
+from products.models import Product, UserProduct, Supplier
 
 
 def choose_supplier(request):
@@ -37,20 +34,23 @@ def choose_product(request):
             now = datetime.now()
             current_time = now.strftime("%H:%M:%S")
 
-            product.supplier = supplier
+            s = Supplier(supplier=supplier)
+
+            product.supplier = s
             product.current_stock = False  # should be initialized to the initial check result
             product.current_price = 0  # should be initialized to the initial check result
             product.last_updated = current_time
             product.product_id = form.cleaned_data['product_id']
             product.product_name = form.cleaned_data['product_name']
+            product.save()
 
-            user_prod.username = request.user.username
-            user_prod.product_name = form.cleaned_data['product_name']
+            user_prod.username = request.user
+            user_prod.product_name = product
             user_prod.notification_interval = form.cleaned_data['notification_interval']
             user_prod.notification_method = form.cleaned_data['notification_method']
-
-            product.save()
             user_prod.save()
+
+            return redirect('/dashboard/')
     else:
         print(supplier)
         if supplier == 'Amazon':

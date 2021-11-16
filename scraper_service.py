@@ -1,5 +1,5 @@
 from django.db import connection
-from core.best_buy_scraper import BestBuyScraper
+from products.scraper_driver.best_buy_scraper import BestBuyScraper
 import django
 import datetime, os, sys
 from core.amazon_scraper import amazon_scraper

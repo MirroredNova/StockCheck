@@ -45,7 +45,7 @@ class RunScraper():
                 product.current_stock = stock
                 product.last_updated = pytz.utc.localize(datetime.datetime.utcnow())
                 product.save()
-            elif product.supplier == 'amazon':
+            elif product.supplier == 'Amazon':
                 print('Trying to get amazon ')
                 stock, price, name = amazon_scraper(product.product_url)
                 product.current_stock = stock
@@ -95,12 +95,13 @@ class RunScraper():
 
 def main():
     while True:
-        try:
-            s = RunScraper()
-            s.main()
-            time.sleep(.5)
-        except Exception as e:
-            print(e)
+        #try:
+        s = RunScraper()
+        s.main()
+        time.sleep(5)
+        # except Exception as e:
+        #     print(e)
+        #     time.sleep(5)
 
 if __name__ == '__main__':
     main()

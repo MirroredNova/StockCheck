@@ -8,10 +8,10 @@ class Products(models.Model):
     current_stock = models.BooleanField()
     current_price = models.DecimalField(decimal_places=2,max_digits=20)
     last_updated = models.DateTimeField()
-    product_id = models.CharField(max_length=30)
+    product_id = models.CharField(max_length=200)
     product_name = models.CharField(max_length=200)
     prodcut_nickname = models.CharField(max_length=200,default='lol')
-    product_url = models.CharField(max_length=200, default='lol')
+    product_url = models.CharField(max_length=200)
 
 
 class UserProducts(models.Model):

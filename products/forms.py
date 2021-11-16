@@ -1,9 +1,19 @@
 from django import forms
-from .models import Products
+from .models import Product, Supplier, UserProduct
+from products.choices import *
 
 
-class CreateDashboardBlock(forms.ModelForm):
+class SupplierModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return obj.supplier
 
-    class Meta:
-        model = Products
-        fields = ('supplier', 'first_name', 'last_name', 'email', 'phone', 'discord')
+
+class CreateDashboardBlockSupplier(forms.Form):
+    supplier = SupplierModelChoiceField(queryset=Supplier.objects.all())
+
+
+class CreateDashboardBlockAmazon(forms.Form):
+    product_name = forms.CharField(max_length=400)
+    product_id = forms.CharField(max_length=20)
+    notification_interval = forms.ChoiceField(choices=NOTIFICATION_INTERVAL)
+    notification_method = forms.ChoiceField(choices=NOTIFICATION_CHOICES)

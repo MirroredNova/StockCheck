@@ -3,12 +3,9 @@ from account.models import User
 from products.choices import *
 
 
-class Supplier(models.Model):
-    supplier = models.CharField(max_length=200, primary_key=True)
-
-
 class Product(models.Model):
-    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
+    supplier = models.CharField(max_length=20,
+                                choices=SUPPLIERS)
     current_stock = models.BooleanField()
     current_price = models.DecimalField(decimal_places=2, max_digits=20)
     last_updated = models.TimeField()

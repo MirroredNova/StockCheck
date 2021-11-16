@@ -1,15 +1,10 @@
 from django import forms
-from .models import Product, Supplier, UserProduct
 from products.choices import *
 
 
-class SupplierModelChoiceField(forms.ModelChoiceField):
-    def label_from_instance(self, obj):
-        return obj.supplier
-
-
 class CreateDashboardBlockSupplier(forms.Form):
-    supplier = SupplierModelChoiceField(queryset=Supplier.objects.all())
+    SUPPLIERS.insert(0, ('', '------'))
+    supplier = forms.ChoiceField(choices=SUPPLIERS, required=True, label='Please Select a Supplier')
 
 
 class CreateDashboardBlockAmazon(forms.Form):
@@ -17,3 +12,4 @@ class CreateDashboardBlockAmazon(forms.Form):
     product_id = forms.CharField(max_length=20)
     notification_interval = forms.ChoiceField(choices=NOTIFICATION_INTERVAL)
     notification_method = forms.ChoiceField(choices=NOTIFICATION_CHOICES)
+    product_url = forms.CharField(max_length=200)

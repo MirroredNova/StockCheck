@@ -17,6 +17,9 @@ python manage.py createsuperuser
 Once this is done, run the following command to start the server:  
 python manage.py runserver
 
+Finally, in another terminal window run 
+python scraper_sevice.py 
+
 To view the website, navigate to the following URL in your browser of choice:  
 http://127.0.0.1:8000/
 

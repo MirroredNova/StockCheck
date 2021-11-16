@@ -2,8 +2,6 @@
 To run our application on MAC, you first need to install the dependencies with:  
 pip3 install -r requirements.txt
 
----
-
 Since model data (migrations) are not included in the repo, they must be created.
 Navigate to the base StockCheck project folder in terminal/PS and run the following commands:  
 python manage.py makemigrations  
@@ -21,3 +19,4 @@ python manage.py runserver
 
 To view the website, navigate to the following URL in your browser of choice:  
 http://127.0.0.1:8000/
+

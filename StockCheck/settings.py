@@ -37,12 +37,24 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'tailwind',
+    'frontend',
     'core',
     'account',
     'notifications',
     'products',
 ]
+
+# Registers the generated 'frontend' app
+TAILWIND_APP_NAME = 'frontend'
+
+# Contains the local IP address
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+# NPM_BIN_PATH = r"C:\Program Files\nodejs\npm"
+NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

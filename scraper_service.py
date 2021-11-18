@@ -12,22 +12,10 @@ from django.utils import timezone
 import pytz
 from collections import defaultdict
 import time
+from core.notifications import sendEmail
+import threading
 
 class RunScraper():
-
-    def __init__(self) -> None:
-        # self.DICT_FILE = 'product_dict.pkl'
-        # # dict will have key as product name and value is last_updated
-        # self.product_dict = {}
-        
-        # if self.DICT_FILE not in os.listdir():
-        #     self.create_product_dict()
-        # else:
-        #     with open(self.DICT_FILE,'rb') as reader:
-        #         self.product_dict = pickle.load(reader)
-        pass
-            
-
     def create_product_dict(self):
         all_products = Products.objects.all()
         for product in all_products:
@@ -90,18 +78,31 @@ class RunScraper():
 
         self.update_prodcuts(products_to_update)
         
-        
 
+class NotificationSender():
+
+    def send_notifcations(self):
+        notifications = NotificationQueue.objects.all()
+        for each in notifications:
+            if each.notification_method == 'Email':
+                send_to = each.username.email
+                message = f"You have an update for a product"
+                subject = "Stock change"
+                sendEmail(send_to,'derekfran55@gmail.com',subject,message)
+            if each.notification_method == 'SMS':
+                pass
+            
+            each.delete()
 
 def main():
+    s = RunScraper()
+    n = NotificationSender()
     while True:
-        #try:
-        s = RunScraper()
         s.main()
-        time.sleep(5)
-        # except Exception as e:
-        #     print(e)
-        #     time.sleep(5)
+        t = threading.Thread(target=n.send_notifcations)
+        t.start()
+        t.join()
+        time.sleep(.5)
 
 if __name__ == '__main__':
     main()

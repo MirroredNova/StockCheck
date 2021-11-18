@@ -38,7 +38,7 @@ def sendEmail(to: str,email_from: str,subject: str,body: str='',file_path:str=No
     # start TLS for security 
     s.starttls() 
     # Authentication 
-    s.login(email_from, "PASSWORD") 
+    s.login(email_from, "cchokkzzusxkwhxi") 
     # Converts the Multipart msg into a string 
     text = msg.as_string() 
     # sending the mail 

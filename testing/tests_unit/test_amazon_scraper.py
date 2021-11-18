@@ -1,5 +1,4 @@
 from django.test import TestCase
-
 from core.amazon_scraper import amazon_scraper
 
 

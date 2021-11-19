@@ -10,6 +10,8 @@ class CreateDashboardBlockSupplier(forms.Form):
 class CreateDashboardBlockAmazon(forms.Form):
     product_name = forms.CharField(max_length=400)
     product_id = forms.CharField(max_length=20)
+    NOTIFICATION_INTERVAL.insert(0, ('', '------'))
+    NOTIFICATION_CHOICES.insert(0, ('', '------'))
     notification_interval = forms.ChoiceField(choices=NOTIFICATION_INTERVAL)
     notification_method = forms.ChoiceField(choices=NOTIFICATION_CHOICES)
     product_url = forms.CharField(max_length=200)

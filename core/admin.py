@@ -1,7 +1,5 @@
 from django.contrib import admin
-from .models import Products, UserProducts, NotificationQueue
+from .models import NotificationQueue
 
 # Register your models here.
-admin.site.register(Products)
-admin.site.register(UserProducts)
 admin.site.register(NotificationQueue)

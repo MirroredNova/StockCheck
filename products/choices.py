@@ -5,9 +5,9 @@ SUPPLIERS = [
         (BEST_BUY, 'Best Buy')
 ]
 
-FAST = 'Fast'
-MED = 'Medium'
-SLOW = 'Slow'
+FAST = '1_min'
+MED = '10_min'
+SLOW = '1_hour'
 NOTIFICATION_INTERVAL = [
         (FAST, 'Notifications every 1 min'),
         (MED, 'Notifications every 10 min'),

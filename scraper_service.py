@@ -1,18 +1,15 @@
-from django.db import connection
-from products.scraper_driver.best_buy_scraper import BestBuyScraper
+from products.scrapers.best_buy_scraper import BestBuyScraper
 import django
-import datetime, os, sys
-from core.amazon_scraper import amazon_scraper
+import datetime, os
+from products.scrapers.amazon_scraper import amazon_scraper
 os.chdir('core/')
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "StockCheck.settings")
 django.setup()
 from core.models import *
-import pickle
-from django.utils import timezone
 import pytz
 from collections import defaultdict
 import time
-from core.notifications import sendEmail
+from notifications.notifications import sendEmail
 import threading
 
 class RunScraper():

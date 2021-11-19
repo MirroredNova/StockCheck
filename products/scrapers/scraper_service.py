@@ -1,8 +1,9 @@
+from products.models import Product, UserProduct
 from products.scrapers.best_buy_scraper import BestBuyScraper
 import django
 import datetime, os
 from products.scrapers.amazon_scraper import amazon_scraper
-os.chdir('core/')
+os.chdir('../../core/')
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "StockCheck.settings")
 django.setup()
 from core.models import *
@@ -14,7 +15,7 @@ import threading
 
 class RunScraper():
     def create_product_dict(self):
-        all_products = Products.objects.all()
+        all_products = Product.objects.all()
         for product in all_products:
             self.product_dict[product.product_name] = product.last_updated
 
@@ -41,7 +42,7 @@ class RunScraper():
 
     def main(self):
         
-        user_products = UserProducts.objects.all()
+        user_products = UserProduct.objects.all()
         
         # key is product object val is whether or not the product has been updated
         products_dict = defaultdict(lambda:0)   

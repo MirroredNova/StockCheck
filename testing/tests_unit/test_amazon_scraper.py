@@ -48,7 +48,7 @@ class AmazonTestCases(TestCase):
 
     def test_shortened_amazon_link(self):
         """Amazon provides shortened link forms, an in-stock item accessed from a shortened link should act the same"""
-        in_stock, price, name = amazon_scraper("amzn.com/B01N2145N9")
+        in_stock, price, name = amazon_scraper("https://amzn.com/dp/B01N2145N9")
 
         self.assertEqual(price, 449.99, "Available item price not as expected (may have changed, confirm)")
         self.assertTrue(in_stock, "Available item not recognized as available")

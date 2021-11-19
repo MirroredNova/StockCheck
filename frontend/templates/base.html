@@ -1,13 +1,13 @@
 {% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>
-			StockCheck - {% block title %} {% endblock %}
-		</title>
+	<head>		
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>
+			StockCheck - {% block title %} {% endblock %}
+		</title>
 		{% tailwind_css %}
 	</head>
 
@@ -19,19 +19,37 @@
 		
 			{% block nav %}
 				{% if not user.is_authenticated %}
-						<h1 id="logo"><a href="{% url 'home_page' %}" style="text-decoration: none">StockCheck </a></h1>
-						<div class="nav-bar">
-							<nav>
+						<!-- <h1 id="logo"><a href="{% url 'home_page' %}" class="text-center block border border-blue-500 rounded py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white">StockCheck </a></h1> -->
+						<!-- <div class="nav-bar"> -->
+							<!-- <nav>
 								<ul>
 									<li><a class='inner' href="{% url 'login' %}">Login</a></li>
 									<li><a class='inner' href="{% url 'signup' %}">Create Account</a></li>
 								</ul>
-							</nav>
+							</nav> -->
+						<!-- </div> -->
+					<!-- </div> -->
+
+					<ul class="flex">
+						<li class="flex-1 mr-2">
+						  <a class="text-center block border border-blue-500 rounded py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white" href="{% url 'home_page' %}">StockCheck</a>
+						</li>
+					</ul>
+					<nav class="flex items-center justify-between flex-wrap bg-teal-500 p-6">											
+						<div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">							
+						  <div class="text-sm lg:flex-grow">
+							<a href="{% url 'login' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+								Login
+							</a>
+							<a href="{% url 'signup' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+								Create Account
+							</a>
+						  </div>
 						</div>
-					</div>
+					</nav>
 				{% elif user.is_authenticated %}
-					<h1 id="logo"><a href="{% url 'home_page' %}" style="text-decoration: none">StockCheck </a></h1>
-					<div class="nav-bar">
+					<!-- <h1 id="logo"><a href="{% url 'home_page' %}" style="text-decoration: none">StockCheck </a></h1> -->
+					<!-- <div class="nav-bar">
 						<nav>
 							<ul>
 								<li><a class='inner' href="{% url 'dashboard' %}">Dashboard</a></li>
@@ -40,8 +58,44 @@
 								<li class="inner">Signed in as: {{ user.get_username }}</li>
 							</ul>
 						</nav>
-					</div>
-		
+					</div> -->
+
+					<ul class="flex">
+						<li class="flex-1 mr-2">
+						  <a class="text-center block border border-blue-500 rounded py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white" href="{% url 'home_page' %}">StockCheck</a>
+						</li>
+					</ul>
+					<nav class="flex items-center justify-between flex-wrap bg-teal-500 p-6">											
+						<div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">							
+						  <div class="text-sm lg:flex-grow">
+							  <!-- class="rounded-lg px-4 py-2 border-2 border-blue-500 text-blue-500 hover:bg-blue-600 hover:text-blue-100 duration-300" -->
+							<a href="{% url 'dashboard' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white hover:bg-gray-300 mr-4"> 
+								Dashboard
+							</a>
+							<a href="{% url 'management' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white hover:bg-gray-300 mr-4">
+								Account
+							</a>
+							<a href="{% url 'logout' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white hover:bg-gray-300 mr-4">
+								Logout
+							</a>
+							<a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+								Signed in as: {{ user.get_username }}
+							</a>
+						  </div>
+						</div>
+					</nav>
+
+					<!-- <ul class="flex">
+						<li class="mr-3">
+						  <a class="inline-block border border-blue-500 rounded py-1 px-3 bg-blue-500 text-white" href="{% url 'dashboard' %}">Dashboard</a>
+						</li>
+						<li class="mr-3">
+						  <a class="inline-block border border-blue-500 rounded py-1 px-3 bg-blue-500 text-white" href="{% url 'management' %}">Account</a>
+						</li>
+						<li class="mr-3">
+						  <a class="inline-block border border-blue-500 rounded py-1 px-3 bg-blue-500 text-white" href="{% url 'logout' %}">Logout</a>
+						</li>
+					  </ul> -->		
 		
 				{% endif %}
 				<div class="spacer">

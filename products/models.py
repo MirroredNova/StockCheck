@@ -11,6 +11,8 @@ class Product(models.Model):
     last_updated = models.TimeField()
     product_id = models.CharField(max_length=30)
     product_name = models.CharField(max_length=200)
+    product_nickname = models.CharField(max_length=200, default='lol')
+    product_url = models.CharField(max_length=200)
 
 
 class UserProduct(models.Model):

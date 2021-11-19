@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from datetime import datetime
+import datetime
 from products.forms import CreateDashboardBlockSupplier, CreateDashboardBlockAmazon
-from products.models import Product, UserProduct
+from core.models import Products, UserProducts
 
 
 def choose_supplier(request):
@@ -27,23 +27,34 @@ def choose_product(request):
             pass
 
         if form.is_valid():
-            product = Product()
-            user_prod = UserProduct()
+            product = Products()
+            user_prod = UserProducts()
 
-            now = datetime.now()
-            current_time = now.strftime("%H:%M:%S")
+            now = datetime.datetime.now()
+            #current_time = now.strftime("%H:%M:%S")
 
             product.supplier = supplier
             product.current_stock = False  # should be initialized to the initial check result
             product.current_price = 0  # should be initialized to the initial check result
-            product.last_updated = current_time
+            product.last_updated = now
             product.product_id = form.cleaned_data['product_id']
+            #print(f'Product id is {product.product_id}')
             product.product_name = form.cleaned_data['product_name']
+            product.product_url = form.cleaned_data['product_url']
             product.save()
 
             user_prod.username = request.user
-            user_prod.product_name = product
-            user_prod.notification_interval = form.cleaned_data['notification_interval']
+            user_prod.product_object = product
+            if form.cleaned_data['notification_interval'] == 'Fast':
+                user_prod.notification_interval = '1_min'
+            elif form.cleaned_data['notification_interval'] == 'Medium':
+                user_prod.notification_interval = '10_min'
+            elif form.cleaned_data['notification_interval'] == "Slow":
+                user_prod.notification_interval = '1_hour'
+            else:
+                print(form.cleaned_data['notification_interval'])
+            
+            #user_prod.notification_interval = form.cleaned_data['notification_interval']
             user_prod.notification_method = form.cleaned_data['notification_method']
             user_prod.save()
 

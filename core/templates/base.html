@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF"
+          crossorigin="anonymous">
 
     <title>
         StockCheck - {% block title %} {% endblock %}
-
     </title>
 
     {% load static %}
@@ -17,38 +19,48 @@
 </head>
 
 <body>
-    <div id='container'>
-        {% block header %}
-    <div id="headerLink">
-        <h1><a href="{% url 'home_page' %}">StockCheck </a></h1>
-    </div>
+<div id='container'>
+    {% block header %}
+
     {% endblock %}
 
     {% block nav %}
-    <nav>
         {% if not user.is_authenticated %}
-        <div class='outer'>
-            <a class='inner' href="{% url 'login' %}">Login</a>
-            <a class='inner' href="{% url 'signup' %}">Create Account</a>
-        </div>
+                <h1 id="logo"><a href="{% url 'home_page' %}" style="text-decoration: none">StockCheck </a></h1>
+                <div class="nav-bar">
+                    <nav>
+                        <ul>
+                            <li><a class='inner' href="{% url 'login' %}">Login</a></li>
+                            <li><a class='inner' href="{% url 'signup' %}">Create Account</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         {% elif user.is_authenticated %}
-        <div class='outer'>
-            <a class='inner' href="{% url 'dashboard' %}">Dashboard</a>
-            <a class='inner' href="{% url 'management' %}">Account Management</a>
-            <a class='inner' href="{% url 'logout' %}">Logout</a>
-            <p style='display:inline' id='signedin'>Signed in as: {{ user.get_username }}</p>
-        </div>
+            <h1 id="logo"><a href="{% url 'home_page' %}" style="text-decoration: none">StockCheck </a></h1>
+            <div class="nav-bar">
+                <nav>
+                    <ul>
+                        <li><a class='inner' href="{% url 'dashboard' %}">Dashboard</a></li>
+                        <li><a class='inner' href="{% url 'management' %}">Account</a></li>
+                        <li><a class='inner' href="{% url 'logout' %}">Logout</a></li>
+                        <li class="inner">Signed in as: {{ user.get_username }}</li>
+                    </ul>
+                </nav>
+            </div>
+
 
         {% endif %}
-    </nav>
+        <div class="spacer">
+            &nbsp;
+        </div>
     {% endblock %}
 
     {% block content %}
 
     {% endblock %}
-    </div>
+</div>
 
 </body>
-
 
 </html>

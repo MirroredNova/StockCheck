@@ -19,11 +19,12 @@ class BestBuyScraper():
         self.options.add_argument('--no-sandbox')
         self.options.add_argument('log-level=3')
 
-        self.implicit_wait_interval = 5
+        self.implicit_wait_interval = 2
 
 
     # @param url: String with the url of the item that you're trying to find the price of 
-    # @return: Returns a float of the price of the item
+    # @return: Returns a float of the price of the item and if out of stock 0
+    # @return: Returns True if the item is in stock otherwise false
     def get_price_bestbuy(self,url='https://www.bestbuy.com/site/combo/all-headphones/7cf1537f-9370-4db1-9b5c-b673c5c87e38'):
         
         if os.name == 'nt':
@@ -42,10 +43,16 @@ class BestBuyScraper():
         try:
             temp_price = price.replace('$','')
             float_price = float(temp_price)
-            return float_price
+            return float_price, True
         except Exception as e:
-            print('Failed to get price data')
-            return None
+            #print('Failed to get price data')
+            pass
+            
+
+        add_cart_element = driver.find_element_by_class_name('add-to-cart-button')
+        if add_cart_element.text == "Sold Out":
+            return 0, False
+        
 
 
     # @param product_sku: SKU for the product you're looking for 
@@ -63,7 +70,7 @@ class BestBuyScraper():
         #driver.get_screenshot_as_file('screenshot.png')
 
         if 'search' not in driver.current_url:
-            print("Already got the url")
+            #print("Already got the url")
             return driver.current_url
 
         header_element = driver.find_element_by_class_name('sku-header')
@@ -71,5 +78,4 @@ class BestBuyScraper():
         link = link_element.get_attribute('href')
 
         return link
-
 

@@ -3,9 +3,11 @@ from products.scrapers.best_buy_scraper import BestBuyScraper
 import django
 import datetime, os
 from products.scrapers.amazon_scraper import amazon_scraper
-os.chdir('../../core/')
+# os.chdir('../../core/')
+os.chdir('./core/')
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "StockCheck.settings")
 django.setup()
+os.chdir('..')
 from core.models import *
 import pytz
 from collections import defaultdict

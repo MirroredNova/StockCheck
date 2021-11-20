@@ -11,8 +11,8 @@
         <div class="item">
             <p class="item-text">Product Name: {{ products.product_name.product_name }}</p>
             <p class="item-text">Price: ${{ products.product_name.current_price }}</p>
-            <p class="item-text">{% if products.product_name.current_stock == true %}
-            In Stock
+            <p class="item-text">{% if products.product_name.current_stock %}
+                In Stock
             {% else %}
                 Out of Stock
             {% endif %}

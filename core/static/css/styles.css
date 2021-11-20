@@ -97,6 +97,10 @@ header::after {
     padding: 10px 0;
 }
 
+#logo a {
+    color: red;
+}
+
 
 nav {
     float: right;

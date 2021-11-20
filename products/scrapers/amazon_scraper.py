@@ -4,7 +4,7 @@ import requests
 
 def amazon_scraper(url):
     try:
-        id_search = "availability"
+        # id_search = "availability"
         HEADERS = ({'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64)}'
                                   'AppleWebKit/537.36 (KHTML, like Gecko))'
                                   'Chrome/44.0.2403.157 Safari/537.36',
@@ -13,17 +13,17 @@ def amazon_scraper(url):
         soup = BeautifulSoup(r.content, features="html.parser")
         price = soup.find('span', {'class': 'a-price'}).get_text().strip()
         price = price[0:int(len(price) / 2)]
-        data = soup.find(id=id_search)
-        data = data.find('span', {'class': 'a-size-medium'}).text.strip()
+        #data = soup.find(id=id_search)
         name = soup.find('span', {'id': 'productTitle'}).text.strip()
-        price = price.replace('$','')
+        price = price.replace('$', '')
+        price = price.replace(',', '')
         price = float(price)
-        if not data:
-            data = 'Out of Stock'
+        soup = BeautifulSoup(r.content, features="html.parser")
+        stock = soup.find('span', {'id': 'submit.buy-now'}).text.strip()
+        if not stock:
             return False, price, name
         return True, price, name
     except AttributeError:
-        data = 'Out of Stock.'
         price = 0
         return False, price, name
 

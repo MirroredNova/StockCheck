@@ -3,11 +3,11 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.keys import Keys
+from StockCheck.settings import CHROMEDRIVER_PATH
 from account.models import User
 import time
 
 
-path = 'resources/webdrivers/chromedriver.exe'
 TEST_USERNAME = 'testuser1'
 TEST_PASSWORD = 'testpassword1'
 
@@ -17,7 +17,7 @@ class LoginTest(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.selenium = webdriver.Chrome(executable_path=path)
+        cls.selenium = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH)
 
     @classmethod
     def tearDownClass(cls):

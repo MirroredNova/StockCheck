@@ -146,3 +146,5 @@ LOGIN_REDIRECT_URL = '/dashboard'
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = str(BASE_DIR.joinpath('resources/sent_emails'))
+
+CHROMEDRIVER_PATH = 'resources/webdrivers/chromedriver.exe'

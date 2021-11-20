@@ -29,7 +29,7 @@ class BestBuyScraper:
     def get_price_bestbuy(self, url):
 
         if os.name == 'nt':
-            driver = webdriver.Chrome(executable_path="chromedriver.exe", options=self.options)
+            driver = webdriver.Chrome(executable_path="./resources/webdrivers/chromedriver.exe", options=self.options)
         else:
             driver = webdriver.Chrome(executable_path="/home/derek/StockCheck/chromedriver", options=self.options)
 
@@ -58,7 +58,7 @@ class BestBuyScraper:
         url = f'https://www.bestbuy.com/site/searchpage.jsp?st={product_sku}&_dyncharset=UTF-8'
 
         if os.name == 'nt':
-            driver = webdriver.Chrome(executable_path="chromedriver.exe", options=self.options)
+            driver = webdriver.Chrome(executable_path="./resources/webdrivers/chromedriver.exe", options=self.options)
         else:
             driver = webdriver.Chrome(executable_path="/home/derek/StockCheck/chromedriver", options=self.options)
 

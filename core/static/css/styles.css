@@ -1,7 +1,3 @@
-body {
-    background-color: #eeeeee;
-}
-
 #signedin {
     color: royalblue;
     padding: 1%;
@@ -97,6 +93,10 @@ header::after {
     padding: 10px 0;
 }
 
+#logo a {
+    font-weight: 900;
+}
+
 
 nav {
     float: right;
@@ -165,14 +165,14 @@ nav a:hover::before {
 }
 
 .item {
-    background-color: #a8c0ff;
+    background-color: #aabfff;
     aspect-ratio: 1;
     border: 1px solid black;
     border-radius: 3%;
 }
 
 .add {
-    background-color: #aab7e8;
+    background-color: #5871d0;
     display: flex;
     justify-content: center;
     align-items: center;

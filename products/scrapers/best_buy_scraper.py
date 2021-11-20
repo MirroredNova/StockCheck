@@ -1,6 +1,8 @@
 from selenium import webdriver
 import os
 
+from StockCheck.settings import CHROMEDRIVER_PATH
+
 
 class BestBuyScraper:
     def __init__(self) -> None:
@@ -29,9 +31,9 @@ class BestBuyScraper:
     def get_price_bestbuy(self, url):
 
         if os.name == 'nt':
-            driver = webdriver.Chrome(executable_path="chromedriver.exe", options=self.options)
+            driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, options=self.options)
         else:
-            driver = webdriver.Chrome(executable_path="/home/derek/StockCheck/chromedriver", options=self.options)
+            driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, options=self.options)
 
         driver.get(url)
         driver.implicitly_wait(self.implicit_wait_interval)

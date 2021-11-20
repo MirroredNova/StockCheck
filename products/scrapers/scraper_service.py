@@ -3,9 +3,11 @@ from products.scrapers.best_buy_scraper import BestBuyScraper
 import django
 import datetime, os
 from products.scrapers.amazon_scraper import amazon_scraper
-os.chdir('../../core/')
+# os.chdir('../../core/')
+os.chdir('./core/')
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "StockCheck.settings")
 django.setup()
+os.chdir('..')
 from core.models import *
 import pytz
 from collections import defaultdict
@@ -19,13 +21,13 @@ class RunScraper():
         for product in all_products:
             self.product_dict[product.product_name] = product.last_updated
 
-    def update_prodcuts(self,products):
+    def update_products(self, products):
         for product in products:
             if product.supplier == 'bestbuy':
                 print('Trying to get bestbuy')
                 b = BestBuyScraper()
                 url = b.get_product_url_bestbuy(product.product_id)
-                price, stock = b.get_price_bestbuy(url)
+                stock, price, name = b.get_price_bestbuy(url)
                 #print(f'Price is {price} stock is {stock}')
                 product.current_price = price
                 product.current_stock = stock
@@ -74,7 +76,7 @@ class RunScraper():
                         products_to_update.append(product)
                         products_dict[product] = 1
 
-        self.update_prodcuts(products_to_update)
+        self.update_products(products_to_update)
         
 
 class NotificationSender():

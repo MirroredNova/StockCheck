@@ -11,7 +11,7 @@ import os
 # @param: body - Body text of the email
 # @param: filePath - Path to the file to attach
 
-# NEED TO PICK AND EMAIL TO HAVE THIS WORK
+# NEED TO PICK AN EMAIL TO HAVE THIS WORK
 def sendEmail(to: str,email_from: str,subject: str,body: str='',file_path:str=None) -> None:
     msg = MIMEMultipart()
     msg['Subject'] = subject

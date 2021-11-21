@@ -1,3 +1,4 @@
+from django.contrib.auth.forms import PasswordChangeForm
 from django.test import TestCase
 
 from account.forms import *
@@ -181,7 +182,7 @@ class CreateUserFormTest(TestCase):
                 'last_name': LAST,
                 'email': EMAIL,
                 'discord': 'test#1234',
-                'password1': 'testpassword1',
+                'password1': PASSWORD,
                 'password2': 'testpassword2'}
         form = CreateUserForm(data=data)
         self.assertEqual(form.errors['password2'], ['The two password fields didn’t match.'])
@@ -205,7 +206,35 @@ class LogInFormTest(TestCase):
         self.assertFalse(form.is_valid())
 
 
+# 1. Test valid
 class AccountManagementFormTest(TestCase):
 
     def setUp(self):
-        pass
+        self.test_user = User.objects.create_user(username=USERNAME, password=PASSWORD)
+        self.test_user.save()
+
+
+# 1. Test valid password change form
+# 2. Test invalid old password
+# 3. Test un-matching new passwords
+class PasswordChangeFormTest(TestCase):
+
+    def setUp(self):
+        self.test_user = User.objects.create_user(username='testuser1', password=PASSWORD)
+        self.test_user.save()
+
+    def test_valid_change_form(self):
+        data = {'old_password': PASSWORD, 'new_password1': 'testpassword2', 'new_password2': 'testpassword2'}
+        form = PasswordChangeForm(user=self.test_user, data=data)
+        self.assertTrue(form.is_valid())
+
+    def test_invalid_old_password_change_form(self):
+        data = {'old_password': 'invalidpassoword1', 'new_password1': 'testpassword2', 'new_password2': 'testpassword2'}
+        form = PasswordChangeForm(user=self.test_user, data=data)
+        self.assertEqual(form.errors['old_password'],
+                         ['Your old password was entered incorrectly. Please enter it again.'])
+
+    def test_different_new_passwords_change_form(self):
+        data = {'old_password': PASSWORD, 'new_password1': 'testpassword2', 'new_password2': 'testpassword3'}
+        form = PasswordChangeForm(user=self.test_user, data=data)
+        self.assertEqual(form.errors['new_password2'], ['The two password fields didn’t match.'])

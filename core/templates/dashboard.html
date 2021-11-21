@@ -7,42 +7,18 @@
 {% block content %}
 
     <div class="container-items">
+        {% for products in UserProduct %}
         <div class="item">
-            <p class="item-text">RTX 3080TI</p>
-            <p class="item-text">DOLLA BILLS</p>
-            <p class="item-text">IN STOCK??!?!</p>
+            <p class="item-text">Product Name: {{ products.product_name.product_name }}</p>
+            <p class="item-text">Price: ${{ products.product_name.current_price }}</p>
+            <p class="item-text">{% if products.product_name.current_stock %}
+                In Stock
+            {% else %}
+                Out of Stock
+            {% endif %}
+            </p>
         </div>
-        <div class="item">
-            <p class="item-text">RTX 3080TI</p>
-            <p class="item-text">DOLLA BILLS</p>
-            <p class="item-text">IN STOCK??!?!</p>
-        </div>
-        <div class="item">
-            <p class="item-text">RTX 3080TI</p>
-            <p class="item-text">DOLLA BILLS</p>
-            <p class="item-text">IN STOCK??!?!</p>
-        </div>
-        <div class="item">
-            <p class="item-text">RTX 3080TI</p>
-            <p class="item-text">DOLLA BILLS</p>
-            <p class="item-text">IN STOCK??!?!</p>
-        </div>
-        <div class="item">
-            <p class="item-text">RTX 3080TI</p>
-            <p class="item-text">DOLLA BILLS</p>
-            <p class="item-text">IN STOCK??!?!</p>
-        </div>
-        <div class="item">
-            <p class="item-text">RTX 3080TI</p>
-            <p class="item-text">DOLLA BILLS</p>
-            <p class="item-text">IN STOCK??!?!</p>
-        </div>
-        <div class="item">
-            <p class="item-text">RTX 3080TI</p>
-            <p class="item-text">DOLLA BILLS</p>
-            <p class="item-text">IN STOCK??!?!</p>
-        </div>
-
+        {% endfor %}
         <a href="{% url 'choose_supplier' %}">
             <div class="item add">
                 <div id="horizontal"></div>

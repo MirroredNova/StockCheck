@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 import datetime
 from products.forms import CreateDashboardBlockSupplier, CreateDashboardBlockAmazon
 from products.models import Product, UserProduct
+from products.scrapers import amazon_scraper
 
 
 def choose_supplier(request):
@@ -32,13 +33,16 @@ def choose_product(request):
 
             now = datetime.datetime.now()
 
+            url = form.cleaned_data['product_url']
+            stock, price, name = amazon_scraper.amazon_scraper(url)
+
             product.supplier = supplier
-            product.current_stock = False  # should be initialized to the initial check result
-            product.current_price = 0  # should be initialized to the initial check result
+            product.current_stock = stock  # should be initialized to the initial check result
+            product.current_price = price  # should be initialized to the initial check result
             product.last_updated = now
             product.product_id = form.cleaned_data['product_id']
             product.product_name = form.cleaned_data['product_name']
-            product.product_url = form.cleaned_data['product_url']
+            product.product_url = url
             product.save()
 
             user_prod.username = request.user

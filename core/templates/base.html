@@ -16,6 +16,7 @@
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
 </head>
 
 <body>
@@ -35,7 +36,6 @@
                         </ul>
                     </nav>
                 </div>
-            </div>
         {% elif user.is_authenticated %}
             <h1 id="logo"><a href="{% url 'home_page' %}" style="text-decoration: none">StockCheck </a></h1>
             <div class="nav-bar">

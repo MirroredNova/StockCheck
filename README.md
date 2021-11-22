@@ -23,3 +23,5 @@ python scraper_sevice.py
 To view the website, navigate to the following URL in your browser of choice:  
 http://127.0.0.1:8000/
 
+VERSION 2.0 LATEST VERSION
+

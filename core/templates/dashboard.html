@@ -9,9 +9,9 @@
     <div class="container-items">
         {% for products in UserProduct %}
         <div class="item">
-            <p class="item-text">Product Name: {{ products.product_name.product_name }}</p>
-            <p class="item-text">Price: ${{ products.product_name.current_price }}</p>
-            <p class="item-text">{% if products.product_name.current_stock %}
+            <p class="item-text">Product Name: {{ products.product_object.product_nickname }}</p>
+            <p class="item-text">Price: ${{ products.product_object.current_price }}</p>
+            <p class="item-text">{% if products.product_object.current_stock %}
                 In Stock
             {% else %}
                 Out of Stock

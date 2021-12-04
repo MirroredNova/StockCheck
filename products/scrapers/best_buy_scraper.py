@@ -30,10 +30,7 @@ class BestBuyScraper:
     # @return: Returns a string of the product name, if found (currently just blank for testing)
     def get_price_bestbuy(self, url):
 
-        if os.name == 'nt':
-            driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, options=self.options)
-        else:
-            driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, options=self.options)
+        driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, options=self.options)
 
         driver.get(url)
         driver.implicitly_wait(self.implicit_wait_interval)
@@ -41,28 +38,27 @@ class BestBuyScraper:
 
         price_element = driver.find_element_by_class_name('priceView-customer-price')
         price = price_element.find_element_by_tag_name('span').text
+        name_element = driver.find_element_by_class_name('heading-5')
+        name = name_element.text
 
-        try:
-            temp_price = price.replace('$', '')
-            float_price = float(temp_price)
-            return True, float_price, ""
-        except Exception as e:
-            # print('Failed to get price data')
-            pass
+        temp_price = price.replace('$', '')
+        temp_price = temp_price.replace(',','')
+        float_price = float(temp_price)
+
 
         add_cart_element = driver.find_element_by_class_name('add-to-cart-button')
         if add_cart_element.text == "Sold Out":
-            return False, 0, ""
+            return False, 0, name
+        
+        return True, float_price, name 
 
     # @param product_sku: SKU for the product you're looking for 
     # @return: Returns a string with the link that can be used to find the price of the item
-    def get_product_url_bestbuy(self, product_sku):
+    def __get_product_url_bestbuy(self, product_sku):
         url = f'https://www.bestbuy.com/site/searchpage.jsp?st={product_sku}&_dyncharset=UTF-8'
 
-        if os.name == 'nt':
-            driver = webdriver.Chrome(executable_path="./resources/webdrivers/chromedriver.exe", options=self.options)
-        else:
-            driver = webdriver.Chrome(executable_path="/home/derek/StockCheck/chromedriver", options=self.options)
+        
+        driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, options=self.options)
 
         driver.get(url)
         driver.implicitly_wait(self.implicit_wait_interval)

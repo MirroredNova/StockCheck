@@ -1,5 +1,4 @@
-from products.models import Product, UserProduct
-from products.scrapers.best_buy_scraper import BestBuyScraper
+from bs4.element import ProcessingInstruction
 import django
 import datetime, os
 from products.scrapers.amazon_scraper import amazon_scraper
@@ -14,33 +13,35 @@ from collections import defaultdict
 import time
 from notifications.notifications import sendEmail
 import threading
+from products.models import Product, UserProduct
+from products.scrapers.best_buy_scraper import BestBuyScraper
 
 class RunScraper():
-    def create_product_dict(self):
-        all_products = Product.objects.all()
-        for product in all_products:
-            self.product_dict[product.product_name] = product.last_updated
 
     def update_products(self, products):
         for product in products:
-            if product.supplier == 'bestbuy':
+            if product.supplier == 'Best Buy':
                 print('Trying to get bestbuy')
                 b = BestBuyScraper()
-                url = b.get_product_url_bestbuy(product.product_id)
-                stock, price, name = b.get_price_bestbuy(url)
+                #url = b.get_product_url_bestbuy(product.product_id)
+                stock, price, name = b.get_price_bestbuy(product.product_url)
                 #print(f'Price is {price} stock is {stock}')
                 product.current_price = price
                 product.current_stock = stock
                 product.last_updated = pytz.utc.localize(datetime.datetime.utcnow())
                 product.save()
             elif product.supplier == 'Amazon':
-                print('Trying to get amazon ')
-                stock, price, name = amazon_scraper(product.product_url)
-                product.current_stock = stock
-                product.current_price = price
-                product.name = name
-                product.last_updated = pytz.utc.localize(datetime.datetime.utcnow())
-                product.save()
+                try:
+                    print('Trying to get amazon ')
+                    stock, price, name = amazon_scraper(product.product_url)
+                    product.current_stock = stock
+                    product.current_price = price
+                    product.name = name
+                    product.last_updated = pytz.utc.localize(datetime.datetime.utcnow())
+                    product.save()
+                    print(f'Results were {stock}:{price}:{name}')
+                except Exception as e:
+                    print('Ran into a problem with amazon')
 
     def main(self):
         
@@ -59,20 +60,22 @@ class RunScraper():
             if unit == 'hour':
                 now = pytz.utc.localize(datetime.datetime.utcnow())
                 if product.last_updated < now - datetime.timedelta(hours=int(num)):
-                    print('Need to update')
+                    
                     notification = NotificationQueue(username=each.username,notification_method=each.notification_method)
                     notification.save()
                     if products_dict[product] == 0:
+                        print('Need to update')
                         products_to_update.append(product)
                         products_dict[product] = 1
 
             elif unit == 'min':
                 now = pytz.utc.localize(datetime.datetime.utcnow())
                 if product.last_updated < now - datetime.timedelta(minutes=int(num)):
-                    print('Need to update')
+                    
                     notification = NotificationQueue(username=each.username,notification_method=each.notification_method)
                     notification.save()
                     if products_dict[product] == 0:
+                        print('Need to update')
                         products_to_update.append(product)
                         products_dict[product] = 1
 

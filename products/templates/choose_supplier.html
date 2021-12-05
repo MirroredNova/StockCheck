@@ -5,9 +5,5 @@ Create New Item
 {% endblock %}
 
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit">
-</form>
+{% include "form.html" with form=form submittext="Submit" includereq=True %}
 {% endblock %}

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 import datetime
 from products.forms import *
 from products.models import Product, UserProduct
-from products.scrapers import amazon_scraper
+from products.scrapers import amazon_scraper, best_buy_scraper
 
 
 def choose_supplier(request):
@@ -22,10 +22,7 @@ def choose_supplier(request):
 def choose_product(request):
     supplier = request.session['chosen_supplier']
     if request.method == 'POST':
-        if supplier == 'Amazon':
-            form = CreateDashboardBlockAmazon(request.POST)
-        else:
-            pass
+        form = CreateDashboardBlockDefault(request.POST)
 
         if form.is_valid():
             product = Product()
@@ -34,11 +31,14 @@ def choose_product(request):
             now = datetime.datetime.now()
 
             url = form.cleaned_data['product_url']
-            stock, price, name = amazon_scraper.amazon_scraper(url)
 
-            print(stock)
-            print(price)
-            print(name)
+            if supplier == 'Amazon':
+                stock, price, name = amazon_scraper.amazon_scraper(url)
+            elif supplier == 'Best Buy':
+                scraper = best_buy_scraper.BestBuyScraper()
+                stock, price, name = scraper.get_price_bestbuy(url)
+            else:
+                return redirect('/choose_supplier/')
 
             product.supplier = supplier
             product.current_stock = stock  # should be initialized to the initial check result
@@ -59,12 +59,8 @@ def choose_product(request):
 
             return redirect('/dashboard/')
     else:
-        print(supplier)
-        if supplier == 'Amazon':
-            form = CreateDashboardBlockAmazon()
-        else:
-            pass
-    return render(request, 'choose_supplier.html', {
+        form = CreateDashboardBlockDefault()
+    return render(request, 'choose_product.html', {
         'form': form,
     })
 
@@ -90,3 +86,9 @@ def edit_product(request, data):
         'name': product.product_name,
         'form': form,
     })
+
+
+def delete_user_product(request, data):
+    UserProduct.objects.filter(id=data).delete()
+    product = UserProduct.objects.filter(username=request.user)
+    return render(request, 'dashboard.html', {'UserProduct': product})

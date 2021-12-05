@@ -9,7 +9,7 @@ Login
 <hr/>
 <p><b>*</b> fields are required!</p>
 {% include "message_form_block.html" with messages=messages %}
-{% include "account_forms.html" with form=form submittext="Sign Up" includereq=True %}
+{% include "form.html" with form=form submittext="Sign Up" includereq=True %}
 <br/>
 <a href="{% url 'login' %}">Already have an account?</a><br/>
 {% endblock %}

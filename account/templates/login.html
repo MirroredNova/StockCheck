@@ -9,7 +9,7 @@ Login
 <h1>Login</h1>
 <hr/>
 {% include "message_form_block.html" with messages=messages %}
-{% include "account_forms.html" with form=form submittext="Login" includereq=False %}
+{% include "form.html" with form=form submittext="Login" includereq=False %}
 <br/>
 <a href="{% url 'signup' %}">Don't have an account yet?</a><br/>
 <a href="{% url 'password_reset' %}">Forgot your password?</a>

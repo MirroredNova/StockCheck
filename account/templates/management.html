@@ -10,7 +10,7 @@ Account Management
 <hr/>
 <p><b>*</b> fields are required!</p>
 {% include "message_form_block.html" with messages=messages %}
-{% include "account_forms.html" with form=form submittext="Save" includereq=True %}
+{% include "form.html" with form=form submittext="Save" includereq=True %}
 <br/>
 <h6>To reset your password, click the following button:</h6>
 <a href="{% url 'password_change' %}"><button type="submit">Password Reset</button></a>

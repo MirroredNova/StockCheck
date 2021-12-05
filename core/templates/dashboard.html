@@ -1,31 +1,41 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Dashboard
+Dashboard
 {% endblock %}
 
 {% block content %}
 
-    <div class="container-items">
-        {% for products in UserProduct %}
-        <div class="item">
-            <p class="item-text">Product Name: {{ products.product_name.product_name }}</p>
-            <p class="item-text">Price: ${{ products.product_name.current_price }}</p>
-            <p class="item-text">{% if products.product_name.current_stock %}
-                In Stock
+<div class="container-items">
+    {% for products in UserProduct %}
+    <div class="item">
+        <p class="item-text">Product Name: {{ products.product_nickname }}</p>
+        <p class="item-text">Price: ${{ products.product.current_price }}</p>
+        <p class="item-text">{% if products.product.current_stock %}
+            In Stock
             {% else %}
-                Out of Stock
+            Out of Stock
             {% endif %}
-            </p>
-        </div>
-        {% endfor %}
-        <a href="{% url 'choose_supplier' %}">
-            <div class="item add">
-                <div id="horizontal"></div>
-                <div id="vertical"></div>
-            </div>
-        </a>
-
+        </p>
+        <p class="item-text">
+            <a href="{% url 'edit_product' products.id %}">
+                <button>Edit</button>
+            </a>
+        </p>
+        <p class="item-text">
+            <a href="{% url 'delete_product' products.id %}">
+                <button>Delete</button>
+            </a>
+        </p>
     </div>
+    {% endfor %}
+    <a href="{% url 'choose_supplier' %}">
+        <div class="item add">
+            <div id="horizontal"></div>
+            <div id="vertical"></div>
+        </div>
+    </a>
+
+</div>
 
 {% endblock %}

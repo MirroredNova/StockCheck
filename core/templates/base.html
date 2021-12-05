@@ -26,40 +26,48 @@
     {% endblock %}
 
     {% block nav %}
-        {% if not user.is_authenticated %}
-                <h1 id="logo"><a href="{% url 'home_page' %}" style="text-decoration: none">StockCheck </a></h1>
-                <div class="nav-bar">
-                    <nav>
-                        <ul>
-                            <li><a class='inner' href="{% url 'login' %}">Login</a></li>
-                            <li><a class='inner' href="{% url 'signup' %}">Create Account</a></li>
-                        </ul>
-                    </nav>
-                </div>
-        {% elif user.is_authenticated %}
-            <h1 id="logo"><a href="{% url 'home_page' %}" style="text-decoration: none">StockCheck </a></h1>
-            <div class="nav-bar">
-                <nav>
-                    <ul>
-                        <li><a class='inner' href="{% url 'dashboard' %}">Dashboard</a></li>
-                        <li><a class='inner' href="{% url 'management' %}">Account</a></li>
-                        <li><a class='inner' href="{% url 'logout' %}">Logout</a></li>
-                        <li class="inner">Signed in as: {{ user.get_username }}</li>
-                    </ul>
-                </nav>
-            </div>
+    <h1 id="logo"><a href="{% url 'home_page' %}" style="text-decoration: none">StockCheck </a></h1>
+    {% if not user.is_authenticated %}
+    <div class="nav-bar">
+        <nav>
+            <ul>
+                <li><a class='inner' href="{% url 'login' %}">Login</a></li>
+                <li><a class='inner' href="{% url 'signup' %}">Create Account</a></li>
+            </ul>
+        </nav>
+    </div>
+    {% elif user.is_authenticated %}
+    <div class="nav-bar">
+        <nav>
+            <ul>
+                <li><a class='inner' href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a class='inner' href="{% url 'management' %}">Account</a></li>
+                <li><a class='inner' href="{% url 'logout' %}">Logout</a></li>
+                <li class="inner">Signed in as: {{ user.get_username }}</li>
+            </ul>
+        </nav>
+    </div>
 
 
-        {% endif %}
-        <div class="spacer">
-            &nbsp;
-        </div>
+    {% endif %}
+    <div class="spacer">
+        &nbsp;
+    </div>
     {% endblock %}
 
     {% block content %}
 
     {% endblock %}
 </div>
+
+{% block footer %}
+<footer class="text-center text-lg-start bg-light text-muted fixed-bottom">
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+        © 2022 Copyright:
+        <a class="text-reset fw-bold" href="/">StockCheck Automation Project</a>
+    </div>
+</footer>
+{% endblock %}
 
 </body>
 

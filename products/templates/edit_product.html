@@ -5,5 +5,7 @@ Create New Item
 {% endblock %}
 
 {% block content %}
+<h1>Currently Editing Product: <br/> {{ name }}</h1>
+<br/>
 {% include "form.html" with form=form submittext="Submit" includereq=True %}
 {% endblock %}

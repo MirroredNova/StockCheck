@@ -19,6 +19,11 @@ import account.urls
 import core.views
 import products.urls
 
+import scraper_service
+import threading
+
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
@@ -28,3 +33,6 @@ urlpatterns = [
     path('', core.views.home_page, name='home_page'),
     path('dashboard/', core.views.dashboard, name='dashboard'),
 ]
+
+thread = threading.Thread(target=scraper_service.main)
+thread.start()

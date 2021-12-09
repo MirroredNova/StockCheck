@@ -1,5 +1,11 @@
 from django.shortcuts import render, redirect
 import datetime
+from products import scrapers
+from products.forms import CreateDashboardBlockSupplier, CreateDashboardBlockAmazon, CreateDashboardBlockBestBuy
+from products.models import Product, UserProduct
+from products.scrapers import amazon_scraper
+from products.scrapers import best_buy_scraper
+from selenium.common.exceptions import InvalidArgumentException
 from products.forms import *
 from products.models import Product, UserProduct
 from products.scrapers import amazon_scraper, best_buy_scraper
@@ -22,7 +28,13 @@ def choose_supplier(request):
 def choose_product(request):
     supplier = request.session['chosen_supplier']
     if request.method == 'POST':
-        form = CreateDashboardBlockDefault(request.POST)
+        if supplier == 'Amazon':
+            form = CreateDashboardBlockAmazon(request.POST)
+        elif supplier == 'Best Buy':
+            form = CreateDashboardBlockBestBuy(request.POST)
+        else:
+            pass
+        #form = CreateDashboardBlockDefault(request.POST)
 
         if form.is_valid():
             product = Product()
@@ -45,11 +57,13 @@ def choose_product(request):
             product.current_price = price  # should be initialized to the initial check result
             product.last_updated = now
             product.product_id = form.cleaned_data['product_id']
-            product.product_name = name
+            product.product_nickname = form.cleaned_data['product_nickname']
+
             product.product_url = url
             product.save()
 
             user_prod.username = request.user
+
             user_prod.product = product
             user_prod.product_nickname = form.cleaned_data['product_nickname']
             # this saves the constant value in 'choices.py' by default, no conversions necessary
@@ -59,7 +73,13 @@ def choose_product(request):
 
             return redirect('/dashboard/')
     else:
-        form = CreateDashboardBlockDefault()
+        print(supplier)
+        if supplier == 'Amazon':
+            form = CreateDashboardBlockAmazon()
+        elif supplier == 'Best Buy':
+            form = CreateDashboardBlockBestBuy()
+        else:
+            pass
     return render(request, 'choose_product.html', {
         'form': form,
     })

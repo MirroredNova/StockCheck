@@ -6,13 +6,14 @@ Dashboard
 
 {% block content %}
 
-<div class="container-items">
-    {% for products in UserProduct %}
-    <div class="item">
-        <p class="item-text">Product Name: {{ products.product_nickname }}</p>
-        <p class="item-text">Price: ${{ products.product.current_price }}</p>
-        <p class="item-text">{% if products.product.current_stock %}
-            In Stock
+    <div class="container-items">
+        {% for products in UserProduct %}
+        <div class="item">
+            <p class="item-text">Product Name: {{ products.product.product_nickname }}</p>
+            <p class="item-text">Price: ${{ products.product.current_price }}</p>
+            <p class="item-text">{% if products.product.current_stock %}
+                In Stock
+
             {% else %}
             Out of Stock
             {% endif %}

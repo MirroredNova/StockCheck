@@ -7,7 +7,7 @@ class AmazonTestCases(TestCase):
 
     def test_out_of_stock(self):
         """An out-of-stock item from Amazon returns the expected information"""
-        in_stock, price, name = amazon_scraper("https://www.amazon.com/dp/B01MTAAMGZ")
+        in_stock, price, name = amazon_scraper("https://www.amazon.com/ASUS-Graphics-DisplayPort-Military-Grade-Certification/dp/B0985VND1G/ref=sr_1_2?keywords=gpu&qid=1639009409&refinements=p_n_availability%3A2661601011&rnid=2661599011&sr=8-2")
 
         # print("Got: name = %s, price = %f, stock = %s" % (name, price, in_stock))
         self.assertEqual(price, 0, "Out of stock item's price not correct")

@@ -9,7 +9,8 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class UserProductAdmin(admin.ModelAdmin):
-    list_display = ['username', 'product_object', 'notification_interval', 'notification_method']
+    list_display = ['username', 'product', 'product_nickname', 'notification_interval', 'notification_method']
+
 
 
 admin.site.register(Product, ProductAdmin)

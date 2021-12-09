@@ -16,14 +16,8 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-    if sys.argv[1] == 'runserver':
-        import scraper_service
-        t = threading.Thread(target=scraper_service.main)
-        t.start()
     
     execute_from_command_line(sys.argv)
-    if sys.argv[1] == 'runserver':
-        t.join()
 
 
 if __name__ == '__main__':

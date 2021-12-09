@@ -6,9 +6,15 @@ from products.scrapers.amazon_scraper import amazon_scraper
 from selenium.common.exceptions import InvalidArgumentException, NoSuchElementException
 from requests.exceptions import MissingSchema
 
+
+SUPPLIERS.insert(0, ('', '------'))
+NOTIFICATION_INTERVAL.insert(0, ('', '------'))
+NOTIFICATION_CHOICES.insert(0, ('', '------'))
+
+
 class CreateDashboardBlockSupplier(forms.Form):
-    SUPPLIERS.insert(0, ('', '------'))
     supplier = forms.ChoiceField(choices=SUPPLIERS, required=True, label='Please Select a Supplier')
+
 
 
 class CreateDashboardBlockAmazon(forms.Form):
@@ -35,11 +41,10 @@ class CreateDashboardBlockAmazon(forms.Form):
 class CreateDashboardBlockBestBuy(forms.Form):
     product_nickname= forms.CharField(max_length=400)
     product_id = forms.CharField(max_length=20)
-    NOTIFICATION_INTERVAL.insert(0, ('', '------'))
-    NOTIFICATION_CHOICES.insert(0, ('', '------'))
     notification_interval = forms.ChoiceField(choices=NOTIFICATION_INTERVAL)
     notification_method = forms.ChoiceField(choices=NOTIFICATION_CHOICES)
     product_url = forms.CharField(max_length=200)
+
 
     def clean_product_url(self):
         url = self.cleaned_data['product_url']
@@ -51,3 +56,9 @@ class CreateDashboardBlockBestBuy(forms.Form):
             raise ValidationError('Invalid URL')
         return url
             
+
+class EditDashboardBlock(forms.Form):
+    product_nickname = forms.CharField(max_length=200)
+    notification_interval = forms.ChoiceField(choices=NOTIFICATION_INTERVAL)
+    notification_method = forms.ChoiceField(choices=NOTIFICATION_CHOICES)
+

@@ -23,7 +23,6 @@ class RunScraper():
             if product.supplier == 'Best Buy':
                 print('Trying to get bestbuy')
                 b = BestBuyScraper()
-                #url = b.get_product_url_bestbuy(product.product_id)
                 stock, price, name = b.get_price_bestbuy(product.product_url)
                 #print(f'Price is {price} stock is {stock}')
                 product.current_price = price
@@ -53,7 +52,7 @@ class RunScraper():
 
         for each in user_products:
             #print(each.product_object)
-            product = each.product_object
+            product = each.product
             notification_interval = each.notification_interval
             num, unit = notification_interval.split('_')
 
@@ -105,6 +104,12 @@ def main():
         t = threading.Thread(target=n.send_notifcations)
         t.start()
         t.join()
+        time.sleep(.5)
+
+def notify():
+    n = NotificationSender()
+    while True:
+        n.send_notifcations()
         time.sleep(.5)
 
 if __name__ == '__main__':

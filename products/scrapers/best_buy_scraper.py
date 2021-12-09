@@ -50,26 +50,4 @@ class BestBuyScraper:
         if add_cart_element.text == "Sold Out":
             return False, 0, name
         
-        return True, float_price, name 
-
-    # @param product_sku: SKU for the product you're looking for 
-    # @return: Returns a string with the link that can be used to find the price of the item
-    def __get_product_url_bestbuy(self, product_sku):
-        url = f'https://www.bestbuy.com/site/searchpage.jsp?st={product_sku}&_dyncharset=UTF-8'
-
-        
-        driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, options=self.options)
-
-        driver.get(url)
-        driver.implicitly_wait(self.implicit_wait_interval)
-        # driver.get_screenshot_as_file('screenshot.png')
-
-        if 'search' not in driver.current_url:
-            # print("Already got the url")
-            return driver.current_url
-
-        header_element = driver.find_element_by_class_name('sku-header')
-        link_element = header_element.find_element_by_tag_name('a')
-        link = link_element.get_attribute('href')
-
-        return link
+        return True, float_price, name

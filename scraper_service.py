@@ -21,26 +21,32 @@ class RunScraper():
     def update_products(self, products):
         for product in products:
             if product.supplier == 'Best Buy':
-                print('Trying to get bestbuy')
-                b = BestBuyScraper()
-                stock, price, name = b.get_price_bestbuy(product.product_url)
-                #print(f'Price is {price} stock is {stock}')
-                product.current_price = price
-                product.current_stock = stock
-                product.last_updated = pytz.utc.localize(datetime.datetime.utcnow())
-                product.save()
-            elif product.supplier == 'Amazon':
                 try:
-                    print('Trying to get amazon ')
-                    stock, price, name = amazon_scraper(product.product_url)
-                    product.current_stock = stock
+                    print(f"Trying to query Best Buy for: {product.product_name}")
+
+                    b = BestBuyScraper()
+                    stock, price, name = b.get_price_bestbuy(product.product_url)
+                    # print(f'Price is {price} stock is {stock}')
                     product.current_price = price
-                    product.name = name
+                    product.current_stock = stock
+                    product.product_name = name
                     product.last_updated = pytz.utc.localize(datetime.datetime.utcnow())
                     product.save()
                     print(f'Results were {stock}:{price}:{name}')
                 except Exception as e:
-                    print('Ran into a problem with amazon')
+                    print(f'Query of Best Buy failed: {e}')
+            elif product.supplier == 'Amazon':
+                try:
+                    print(f"Trying to query Amazon for: {product.product_name}")
+                    stock, price, name = amazon_scraper(product.product_url)
+                    product.current_stock = stock
+                    product.current_price = price
+                    product.product_name = name
+                    product.last_updated = pytz.utc.localize(datetime.datetime.utcnow())
+                    product.save()
+                    print(f'Results were {stock}:{price}:{name}')
+                except Exception as e:
+                    print(f'Query of Amazon failed: {e}')
 
     def main(self):
         
@@ -63,7 +69,7 @@ class RunScraper():
                     notification = NotificationQueue(username=each.username,notification_method=each.notification_method)
                     notification.save()
                     if products_dict[product] == 0:
-                        print('Need to update')
+                        print('Product needs to update')
                         products_to_update.append(product)
                         products_dict[product] = 1
 
@@ -74,7 +80,7 @@ class RunScraper():
                     notification = NotificationQueue(username=each.username,notification_method=each.notification_method)
                     notification.save()
                     if products_dict[product] == 0:
-                        print('Need to update')
+                        print('Product needs to update')
                         products_to_update.append(product)
                         products_dict[product] = 1
 

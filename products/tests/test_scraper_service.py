@@ -3,11 +3,10 @@ import unittest
 from unittest.mock import patch
 from unittest.mock import MagicMock
 
-import products.scrapers.best_buy_scraper
 from products.scrapers.best_buy_scraper import BestBuyScraper
-from products.scrapers.scraper_service import RunScraper
-from products.scrapers.scraper_service import NotificationSender
-from products.scrapers.scraper_service import main
+from scraper_service import RunScraper
+from scraper_service import NotificationSender
+from scraper_service import main
 from products.models import Product
 from datetime import datetime
 

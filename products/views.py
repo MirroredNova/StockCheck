@@ -56,9 +56,8 @@ def choose_product(request):
             product.current_stock = stock  # should be initialized to the initial check result
             product.current_price = price  # should be initialized to the initial check result
             product.last_updated = now
+            product.product_name = name
             product.product_id = form.cleaned_data['product_id']
-            product.product_nickname = form.cleaned_data['product_nickname']
-
             product.product_url = url
             product.save()
 

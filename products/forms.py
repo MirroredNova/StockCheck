@@ -16,9 +16,8 @@ class CreateDashboardBlockSupplier(forms.Form):
     supplier = forms.ChoiceField(choices=SUPPLIERS, required=True, label='Please Select a Supplier')
 
 
-
 class CreateDashboardBlockAmazon(forms.Form):
-    product_nickname= forms.CharField(max_length=400)
+    product_nickname = forms.CharField(max_length=400)
     product_id = forms.CharField(max_length=20)
     NOTIFICATION_INTERVAL.insert(0, ('', '------'))
     NOTIFICATION_CHOICES.insert(0, ('', '------'))
@@ -38,13 +37,13 @@ class CreateDashboardBlockAmazon(forms.Form):
             raise ValidationError('Invalid URL')
         return url
 
+
 class CreateDashboardBlockBestBuy(forms.Form):
-    product_nickname= forms.CharField(max_length=400)
+    product_nickname = forms.CharField(max_length=400)
     product_id = forms.CharField(max_length=20)
     notification_interval = forms.ChoiceField(choices=NOTIFICATION_INTERVAL)
     notification_method = forms.ChoiceField(choices=NOTIFICATION_CHOICES)
     product_url = forms.CharField(max_length=200)
-
 
     def clean_product_url(self):
         url = self.cleaned_data['product_url']

@@ -5,7 +5,7 @@ from products.choices import *
 
 
 class Product(models.Model):
-    product_id = models.CharField(max_length=30)
+    product_id = models.CharField(max_length=30, default='lol')
     product_name = models.CharField(max_length=200)
     product_url = models.CharField(max_length=200)
     supplier = models.CharField(max_length=20,

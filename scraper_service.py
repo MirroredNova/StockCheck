@@ -20,7 +20,8 @@ from products.scrapers.custom_site_scraper import custom_site_scraper
 class RunScraper():
 
     def update_products(self, products):
-        for product in products:
+        for each in products:
+            product = each.product
             if product.supplier == 'Best Buy':
                 try:
                     print(f"Trying to query Best Buy for: {product.product_name}")
@@ -40,6 +41,11 @@ class RunScraper():
                 try:
                     print(f"Trying to query Amazon for: {product.product_name}")
                     stock, price, name = amazon_scraper(product.product_url)
+                    if str(price) != str(product.current_price):
+                        print('Going to email')
+                        message = f'Price of {each.product_nickname} changed to {price}'
+                        notification = NotificationQueue(username=each.username,notification_method=each.notification_method,message=message)
+                        notification.save()
                     product.current_stock = stock
                     product.current_price = price
                     product.product_name = name
@@ -77,8 +83,7 @@ class RunScraper():
                 now = pytz.utc.localize(datetime.datetime.utcnow())
                 if product.last_updated < now - datetime.timedelta(hours=int(num)):
                     
-                    notification = NotificationQueue(username=each.username,notification_method=each.notification_method)
-                    notification.save()
+                    
                     if products_dict[product] == 0:
                         print('Product needs to update')
                         products_to_update.append(product)
@@ -88,8 +93,8 @@ class RunScraper():
                 now = pytz.utc.localize(datetime.datetime.utcnow())
                 if product.last_updated < now - datetime.timedelta(minutes=int(num)):
                     
-                    notification = NotificationQueue(username=each.username,notification_method=each.notification_method)
-                    notification.save()
+                    # notification = NotificationQueue(username=each.username,notification_method=each.notification_method)
+                    # notification.save()
                     if products_dict[product] == 0:
                         print('Product needs to update')
                         products_to_update.append(product)
@@ -105,7 +110,8 @@ class NotificationSender():
         for each in notifications:
             if each.notification_method == 'Email':
                 send_to = each.username.email
-                message = f"You have an update for a product"
+                message = each.message
+                #message = f"You have an update for a product"
                 subject = "Stock change"
                 sendEmail(send_to,'derekfran55@gmail.com',subject,message)
             if each.notification_method == 'SMS':

@@ -44,7 +44,7 @@ class ScraperServiceTestCases(TestCase):
 
         # Populating database
         Product.objects.create(supplier='Best Buy', current_stock=True, current_price=42.00, product_id='B012',
-                               last_updated=datetime.now(tz=timezone.utc), product_name='2', product_nickname='Two',
+                               last_updated=datetime.now(tz=timezone.utc), product_name='2',
                                product_url='nya2.net')
 
         # Storing old version of product object's timestamp data
@@ -72,7 +72,7 @@ class ScraperServiceTestCases(TestCase):
         # Populating database
         Product.objects.create(supplier='Amazon', current_stock=True, current_price=0.01,
                                product_id='ABCDEFGHIJKLMNOPQRSTUVWXYZ1234', last_updated=datetime.now(tz=timezone.utc),
-                               product_name='3', product_nickname='Three', product_url='nya3.org')
+                               product_name='3', product_url='nya3.org')
 
         # Storing old version of product object's timestamp data
         original_timestamp = Product.objects.get(product_name='3').last_updated
@@ -98,11 +98,11 @@ class ScraperServiceTestCases(TestCase):
 
         # Populating database
         Product.objects.create(supplier='Best Buy', current_stock=True, current_price=42.00, product_id='B012',
-                               last_updated=datetime.now(tz=timezone.utc), product_name='2', product_nickname='Two',
+                               last_updated=datetime.now(tz=timezone.utc), product_name='2',
                                product_url='nya2.net')
         Product.objects.create(supplier='Amazon', current_stock=True, current_price=0.01,
                                product_id='ABCDEFGHIJKLMNOPQRSTUVWXYZ1234', last_updated=datetime.now(tz=timezone.utc),
-                               product_name='3', product_nickname='Three', product_url='nya3.org')
+                               product_name='3', product_url='nya3.org')
 
         # Storing old version of product object's timestamp data
         original_timestamp_BB = Product.objects.get(product_name='2').last_updated

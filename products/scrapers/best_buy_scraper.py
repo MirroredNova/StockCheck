@@ -29,6 +29,9 @@ class BestBuyScraper:
     # @return: Returns a float of the price of the item and if out of stock 0
     # @return: Returns a string of the product name, if found (currently just blank for testing)
     def get_price_bestbuy(self, url):
+        # Ensure that some sort of scheme is provided
+        if not (url.__contains__("https://") or url.__contains__("http://")):
+            url = "https://" + url
 
         driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, options=self.options)
 

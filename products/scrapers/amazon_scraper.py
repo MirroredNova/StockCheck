@@ -9,7 +9,11 @@ def amazon_scraper(url):
                                 'AppleWebKit/537.36 (KHTML, like Gecko))'
                                 'Chrome/44.0.2403.157 Safari/537.36',
                 'Accept-Language': 'en-US, en;q=0.5'})
-                
+
+    # Ensure that some sort of scheme is provided
+    if not (url.__contains__("https://") or url.__contains__("http://")):
+        url = "https://" + url
+
     r = requests.get(url, headers=HEADERS)
     soup = BeautifulSoup(r.content, features="html.parser")
     buy_now_button = soup.select('#buy-now-button')

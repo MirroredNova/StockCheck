@@ -32,11 +32,11 @@ class AmazonTestCases(TestCase):
 
     def test_foreign_english_amazon_site(self):
         """A link provided from the .co.uk site returns data as expected (currencies handled at some level)"""
-        in_stock, price, name = amazon_scraper("https://www.amazon.co.uk/dp/B0002DVDJW")
+        in_stock, price, name = amazon_scraper("https://www.amazon.co.uk/Pinch-Nom-Comfort-Food-Satisfying/dp/1529035015/ref=zg-bs_books_1/258-5169357-2871604?pd_rd_w=0Gy1j&pf_rd_p=c3077bff-a471-42bf-a406-b93ec8e1a044&pf_rd_r=FZNTD235B0GQ3MHTGW07&pd_rd_r=b7837f85-d812-4d60-9846-3b383a342652&pd_rd_wg=XUYrf&pd_rd_i=1529035015&psc=1")
 
-        self.assertEqual(price, 114.47, "Available item price not as expected (may have changed, in GBP)")
+        self.assertEqual(price, 10.00, "Available item price not as expected (may have changed, in GBP)")
         self.assertTrue(in_stock, "Available item not recognized as available")
-        self.assertIn("DW5512", name, "Available item not named as expected")
+        self.assertIn("Pinch", name, "Available item not named as expected")
 
     def test_foreign_german_amazon_site(self):
         """A link provided from the .de site returns data as expected (currencies handled at some level)"""

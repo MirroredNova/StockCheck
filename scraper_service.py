@@ -15,6 +15,7 @@ from notifications.notifications import sendEmail
 import threading
 from products.models import Product, UserProduct
 from products.scrapers.best_buy_scraper import BestBuyScraper
+from products.scrapers.custom_site_scraper import custom_site_scraper
 
 class RunScraper():
 
@@ -22,23 +23,23 @@ class RunScraper():
         for each in products:
             product = each.product
             if product.supplier == 'Best Buy':
-                print('Trying to get bestbuy')
-                b = BestBuyScraper()
-                stock, price, name = b.get_price_bestbuy(product.product_url)
-                if str(price) != str(product.current_price):
-                    print('Going to email')
-                    message = f'Price of {each.product_nickname} changed to {price}'
-                    notification = NotificationQueue(username=each.username,notification_method=each.notification_method,message=message)
-                    notification.save()
-                #print(f'Price is {price} stock is {stock}')
-                
-                product.current_price = price
-                product.current_stock = stock
-                product.last_updated = pytz.utc.localize(datetime.datetime.utcnow())
-                product.save()
+                try:
+                    print(f"Trying to query Best Buy for: {product.product_name}")
+
+                    b = BestBuyScraper()
+                    stock, price, name = b.get_price_bestbuy(product.product_url)
+                    # print(f'Price is {price} stock is {stock}')
+                    product.current_price = price
+                    product.current_stock = stock
+                    product.product_name = name
+                    product.last_updated = pytz.utc.localize(datetime.datetime.utcnow())
+                    product.save()
+                    print(f'Results were {stock}:{price}:{name}')
+                except Exception as e:
+                    print(f'Query of Best Buy failed: {e}')
             elif product.supplier == 'Amazon':
                 try:
-                    print('Trying to get amazon ')
+                    print(f"Trying to query Amazon for: {product.product_name}")
                     stock, price, name = amazon_scraper(product.product_url)
                     if str(price) != str(product.current_price):
                         print('Going to email')
@@ -47,12 +48,22 @@ class RunScraper():
                         notification.save()
                     product.current_stock = stock
                     product.current_price = price
-                    product.name = name
+                    product.product_name = name
                     product.last_updated = pytz.utc.localize(datetime.datetime.utcnow())
                     product.save()
                     print(f'Results were {stock}:{price}:{name}')
                 except Exception as e:
-                    print('Ran into a problem with amazon')
+                    print(f'Query of Amazon failed: {e}')
+            elif product.supplier == 'Custom Site':
+                try:
+                    print(f"Trying to query custom site for: {product.product_url}")
+                    change = custom_site_scraper(product.product_url, product.product_xpath, product.product_element)
+                    product.current_stock = change
+                    product.last_updated = pytz.utc.localize(datetime.datetime.utcnow())
+                    product.save()
+                    print(f'Result was {change}')
+                except Exception as e:
+                    print(f'Query of custom site failed: {e}')
 
     def main(self):
         
@@ -74,8 +85,8 @@ class RunScraper():
                     
                     
                     if products_dict[product] == 0:
-                        print('Need to update')
-                        products_to_update.append(each)
+                        print('Product needs to update')
+                        products_to_update.append(product)
                         products_dict[product] = 1
 
             elif unit == 'min':
@@ -85,8 +96,8 @@ class RunScraper():
                     # notification = NotificationQueue(username=each.username,notification_method=each.notification_method)
                     # notification.save()
                     if products_dict[product] == 0:
-                        print('Need to update')
-                        products_to_update.append(each)
+                        print('Product needs to update')
+                        products_to_update.append(product)
                         products_dict[product] = 1
 
         self.update_products(products_to_update)

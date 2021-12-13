@@ -42,6 +42,23 @@ class BestBuyTestCases(TestCase):
         self.assertTrue(in_stock, "Sold-out item appears in-stock")
         self.assertIn("ZX", name, "Out-of-stock item's name not found: ")
 
+    def test_no_scheme(self):
+        """An link provided with no scheme functions as well as one with a scheme"""
+        url = "www.bestbuy.com/site/sony-zx-series-wired-on-ear-headphones-black/8618232.p?skuId=8618232"
+        in_stock, price, name = BestBuyScraper.get_price_bestbuy(self.scraper, url)
+
+        self.assertEqual(price, 9.99, "Sold-out item's price not correct")
+        self.assertTrue(in_stock, "Sold-out item appears in-stock")
+        self.assertIn("ZX", name, "Out-of-stock item's name not found: ")
+
+    def test_no_scheme_or_prefix(self):
+        """An link provided with no scheme or www prefix functions as well as one with those components"""
+        url = "bestbuy.com/site/sony-zx-series-wired-on-ear-headphones-black/8618232.p?skuId=8618232"
+        in_stock, price, name = BestBuyScraper.get_price_bestbuy(self.scraper, url)
+
+        self.assertEqual(price, 9.99, "Sold-out item's price not correct")
+        self.assertTrue(in_stock, "Sold-out item appears in-stock")
+        self.assertIn("ZX", name, "Out-of-stock item's name not found: ")
 
     def test_non_best_buy_site(self):
         """A site other than BB should throw a NoSuchElementException """
@@ -52,22 +69,6 @@ class BestBuyTestCases(TestCase):
 
     def test_invalid_link(self):
         """An invalid BB link results in a graceful failure with no uncaught errors"""
-        self.assertRaises(InvalidArgumentException, self.scraper.get_price_bestbuy, 'this is not a url')
-
-    # def test_get_url_valid(self):
-    #     """A valid SKU should generate the correct BB product link"""
-    #     url = BestBuyScraper.get_product_url_bestbuy(self.scraper, "8618232")
-    #     # Using the Sony headphones as the reference point
-
-    #     self.assertEqual(url, "https://www.bestbuy.com/site/sony-zx-series-wired-on-ear-headphones-black/8618232.p"
-    #                           "?skuId=8618232", "Product URL incorrect")
-
-    # def test_get_url_invalid(self):
-    #     """An invalid SKU should not cause uncaught errors"""
-    #     # In this case, our return value isn't particularly well-defined (we'll use an empty string)
-    #     # The key thing is that the failure is graceful, currently testing for no uncaught exceptions.
-    #     # In future, we may want this to throw a specific exception and handle it elsewhere.
-    #     url = BestBuyScraper.get_product_url_bestbuy(self.scraper, "861823")
-    #     self.assertEqual(url, '', "Need to test some sort of return value, currently going with it being empty")
+        self.assertRaises(InvalidArgumentException, self.scraper.get_price_bestbuy, 'https://www.bestbuy.com/8618232')
 
     

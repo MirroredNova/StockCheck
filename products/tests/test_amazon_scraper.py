@@ -54,22 +54,29 @@ class AmazonTestCases(TestCase):
         self.assertTrue(in_stock, "Available item not recognized as available")
         self.assertIn("AF75G", name, "Available item not named as expected")
 
-    def test_invalid_amazon_link(self):
-        """An invalid (but properly-formatted) link should fail gracefully"""
-        #in_stock, price, name = amazon_scraper("https://www.amazon.com/dp/B01N2145N12")
-        url = "https://www.amazon.com/dp/B01N2145N12"
+    def test_no_scheme(self):
+        """An link provided with no scheme functions as well as one with a scheme"""
+        in_stock, price, name = amazon_scraper("www.amazon.com/dp/B01N2145N9")
 
-        # self.assertEqual(price, 0, "An invalid link should not have a price returned")
-        # self.assertTrue(in_stock, "An invalid link should not be considered in-stock")
+        self.assertEqual(price, 449.99, "Available item price not as expected (may have changed, confirm)")
+        self.assertTrue(in_stock, "Available item not recognized as available")
+        self.assertIn("AF75G", name, "Available item not named as expected")
+
+    def test_no_scheme_or_prefix(self):
+        """An link provided with no scheme or www prefix functions as well as one with those components"""
+        in_stock, price, name = amazon_scraper("amazon.com/dp/B01N2145N9")
+
+        self.assertEqual(price, 449.99, "Available item price not as expected (may have changed, confirm)")
+        self.assertTrue(in_stock, "Available item not recognized as available")
+        self.assertIn("AF75G", name, "Available item not named as expected")
+
+    def test_invalid_amazon_link(self):
+        """An invalid (but properly-formatted) link should raise the appropriate exception"""
+        url = "https://www.amazon.com/dp/B01N2145N12"
         self.assertRaises(MissingSchema, amazon_scraper, url)
 
     def test_non_amazon_site(self):
-        """A site other than Amazon should not cause uncaught errors"""
-        #in_stock, price, name = amazon_scraper("https://www.aliexpress.com/item/32958852196.html")
-        # Yes I know aliexpress sucks, I was looking for a site with a vaguely Amazon-like format
+        """A site other than Amazon should raise the appropriate exception"""
         url = "https://www.aliexpress.com/item/32958852196.html"
+        # Yes I know aliexpress sucks, I was looking for a site with a vaguely Amazon-like format
         self.assertRaises(MissingSchema, amazon_scraper, url)
-
-        # self.assertEqual(price, 0, "A non-Amazon site should not have a price returned")
-        # self.assertTrue(in_stock, "A non-Amazon site should not be considered in-stock")
-        # Exact implementation of naming aspect is up for debate, should probably be an empty string

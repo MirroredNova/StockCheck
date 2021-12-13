@@ -1,8 +1,10 @@
 AMAZON = 'Amazon'
 BEST_BUY = 'Best Buy'
+CUSTOM = 'Custom Site'
 SUPPLIERS = [
         (AMAZON, 'Amazon'),
-        (BEST_BUY, 'Best Buy')
+        (BEST_BUY, 'Best Buy'),
+        (CUSTOM, 'Custom Site')
 ]
 
 FAST = '1_min'

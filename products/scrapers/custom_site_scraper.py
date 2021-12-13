@@ -1,5 +1,7 @@
 import requests
 from lxml import html
+import urllib3
+import warnings
 
 # @param url: String representation of the site URL
 # @param xpath: String representation of the watched element's XPath
@@ -18,14 +20,19 @@ def custom_site_scraper(url, xpath, element):
 
     # Ensure that some sort of scheme is provided
     if not (url.__contains__("https://") or url.__contains__("http://")):
-        url_clean = "https://" + url
+        url = "https://" + url
 
     # We want to manage this with a valid SSL certificate, but some trustworthy sites get an error with verification
     # This is a hacky solution and probably not the safest, but for the purposes of this we'll use it
+    # We also need to suppress the warning to keep stuff clean, it's unsatisfying but I don't know a workaround
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     try:
-        r = requests.get(url_clean, headers=HEADERS, stream=True)
+        r = requests.get(url, headers=HEADERS, stream=True)
     except requests.exceptions.SSLError:
-        r = requests.get(url_clean, headers=HEADERS, verify=False, stream=True)
+        r = requests.get(url, headers=HEADERS, verify=False, stream=True)
+
+    # And re-enable
+    warnings.resetwarnings()
 
     # Raise a known exception if the HTTP request failed
     r.raise_for_status()
@@ -39,6 +46,7 @@ def custom_site_scraper(url, xpath, element):
         site_changed = True
     elif len(elements) == 1:
         # Appears unchanged
+        site_changed = False
     else:
         raise ValueError("Too many of the specified element found")
 

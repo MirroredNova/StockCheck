@@ -15,6 +15,7 @@ from notifications.notifications import sendEmail
 import threading
 from products.models import Product, UserProduct
 from products.scrapers.best_buy_scraper import BestBuyScraper
+from products.scrapers.custom_site_scraper import custom_site_scraper
 
 class RunScraper():
 
@@ -47,6 +48,16 @@ class RunScraper():
                     print(f'Results were {stock}:{price}:{name}')
                 except Exception as e:
                     print(f'Query of Amazon failed: {e}')
+            elif product.supplier == 'Custom Site':
+                try:
+                    print(f"Trying to query custom site for: {product.product_url}")
+                    change = custom_site_scraper(product.product_url, product.product_xpath, product.product_element)
+                    product.current_stock = change
+                    product.last_updated = pytz.utc.localize(datetime.datetime.utcnow())
+                    product.save()
+                    print(f'Result was {change}')
+                except Exception as e:
+                    print(f'Query of custom site failed: {e}')
 
     def main(self):
         

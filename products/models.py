@@ -10,6 +10,8 @@ class Product(models.Model):
     product_url = models.CharField(max_length=200)
     supplier = models.CharField(max_length=20,
                                 choices=SUPPLIERS)
+    product_xpath = models.CharField(max_length=200,default='',blank=True)
+    product_element = models.CharField(max_length=200,default='',blank=True)
     current_stock = models.BooleanField()
     current_price = models.DecimalField(decimal_places=2, max_digits=20)
     last_updated = models.DateTimeField()

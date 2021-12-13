@@ -9,6 +9,7 @@ from scraper_service import NotificationSender
 from scraper_service import main
 from products.models import Product
 from datetime import datetime
+from django.utils import timezone
 
 class ScraperServiceTestCases(TestCase):
 
@@ -26,7 +27,6 @@ class ScraperServiceTestCases(TestCase):
         # Setting up mocks
         mock_BB_class = mock_best_buy_scraper.return_value
         mock_BB_class.get_price_bestbuy.side_effect = [(False, 42.00, "2")]
-        mock_BB_class.get_product_url_bestbuy.side_effect = ['nya2.net']
         mock_amazon_scraper.side_effect = [(True, 9.50, "1"), (True, 0.05, "3")]
 
         # Running product update
@@ -40,12 +40,11 @@ class ScraperServiceTestCases(TestCase):
         # Setting up mocks
         mock_BB_class = mock_best_buy_scraper.return_value
         mock_BB_class.get_price_bestbuy.side_effect = [(False, 42.00, "2")]
-        mock_BB_class.get_product_url_bestbuy.side_effect = ['nya2.net']
         mock_amazon_scraper.side_effect = [(True, 9.50, "1"), (True, 0.05, "3")]
 
         # Populating database
-        Product.objects.create(supplier='bestbuy', current_stock=True, current_price=42.00, product_id='B012',
-                               last_updated=datetime.now().time(), product_name='2', product_nickname='Two',
+        Product.objects.create(supplier='Best Buy', current_stock=True, current_price=42.00, product_id='B012',
+                               last_updated=datetime.now(tz=timezone.utc), product_name='2', product_nickname='Two',
                                product_url='nya2.net')
 
         # Storing old version of product object's timestamp data
@@ -68,12 +67,11 @@ class ScraperServiceTestCases(TestCase):
         # Setting up mocks
         mock_BB_class = mock_best_buy_scraper.return_value
         mock_BB_class.get_price_bestbuy.side_effect = [(False, 42.00, "2")]
-        mock_BB_class.get_product_url_bestbuy.side_effect = ['nya2.net']
         mock_amazon_scraper.side_effect = [(False, 0.05, "3")]
 
         # Populating database
         Product.objects.create(supplier='Amazon', current_stock=True, current_price=0.01,
-                               product_id='ABCDEFGHIJKLMNOPQRSTUVWXYZ1234', last_updated=datetime.now().time(),
+                               product_id='ABCDEFGHIJKLMNOPQRSTUVWXYZ1234', last_updated=datetime.now(tz=timezone.utc),
                                product_name='3', product_nickname='Three', product_url='nya3.org')
 
         # Storing old version of product object's timestamp data
@@ -96,15 +94,14 @@ class ScraperServiceTestCases(TestCase):
         # Setting up mocks
         mock_BB_class = mock_best_buy_scraper.return_value
         mock_BB_class.get_price_bestbuy.side_effect = [(False, 42.00, "2")]
-        mock_BB_class.get_product_url_bestbuy.side_effect = ['nya2.net']
-        mock_amazon_scraper.side_effect = [(False, 9.50, "1"), (True, 0.05, "3")]
+        mock_amazon_scraper.side_effect = [(False, 0.05, "3")]
 
         # Populating database
-        Product.objects.create(supplier='bestbuy', current_stock=True, current_price=42.00, product_id='B012',
-                               last_updated=datetime.now().time(), product_name='2', product_nickname='Two',
+        Product.objects.create(supplier='Best Buy', current_stock=True, current_price=42.00, product_id='B012',
+                               last_updated=datetime.now(tz=timezone.utc), product_name='2', product_nickname='Two',
                                product_url='nya2.net')
         Product.objects.create(supplier='Amazon', current_stock=True, current_price=0.01,
-                               product_id='ABCDEFGHIJKLMNOPQRSTUVWXYZ1234', last_updated=datetime.now().time(),
+                               product_id='ABCDEFGHIJKLMNOPQRSTUVWXYZ1234', last_updated=datetime.now(tz=timezone.utc),
                                product_name='3', product_nickname='Three', product_url='nya3.org')
 
         # Storing old version of product object's timestamp data

@@ -23,7 +23,6 @@ import scraper_service
 import threading
 
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
 

@@ -2,6 +2,7 @@ import re
 from bs4.element import ProcessingInstruction
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from requests.models import MissingSchema
 from .models import User
 import requests
 from django.core.exceptions import ValidationError
@@ -12,7 +13,7 @@ class CreateUserForm(UserCreationForm):
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'discord_webhook_url')
 
-    def clean_discord(self):
+    def clean_discord_webhook_url(self):
         if self.cleaned_data['discord_webhook_url'] == None:
             return self.cleaned_data['discord_webhook_url']
         url = self.cleaned_data['discord_webhook_url']
@@ -33,12 +34,15 @@ class AccountManagementForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'email', 'phone', 'discord_webhook_url']
 
-    def clean_discord(self):
+    def clean_discord_webhook_url(self):
         if self.cleaned_data['discord_webhook_url'] == None:
             return self.cleaned_data['discord_webhook_url']
         url = self.cleaned_data['discord_webhook_url']
         data = {"content": 'Congrats your webhook url is valid'}
-        response = requests.post(url,json=data)
+        try:
+            response = requests.post(url,json=data)
+        except MissingSchema as e:
+            raise ValidationError('Invalid webhook url')
         if response.status_code != 204:
             raise ValidationError('Invalid webhook url')
         return url

@@ -29,8 +29,8 @@ class RunScraper():
 
                     b = BestBuyScraper()
                     stock, price, name = b.get_price_bestbuy(product.product_url)
-                    if str(price) != str(product.current_price):
-                        message = f'Price of {each.product_nickname} changed to {price}'
+                    if float(price) != float(product.current_price):
+                        message = f'Price of {each.product_nickname} changed to {price} from {product.current_price}'
                         if each.notification_method == 'Discord':
                             discord = each.username.discord_webhook_url
                             notification = NotificationQueue(username=each.username,notification_method=each.notification_method,message=message,discord_url=discord)
@@ -51,7 +51,7 @@ class RunScraper():
                 try:
                     #print(f"Trying to query Amazon for: {product.product_name}")
                     stock, price, name = amazon_scraper(product.product_url)
-                    if price != product.current_price:
+                    if float(price) != float(product.current_price):
                         message = f'Price of {each.product_nickname} changed to {price} from {product.current_price}'
                         #print(message)
                         if each.notification_method == 'Discord':

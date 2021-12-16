@@ -87,7 +87,7 @@ def choose_product(request):
 def edit_product(request, data):
     user_prod = UserProduct.objects.filter(id=data).first()
     product = user_prod.product
-    discord_url = user_prod.username.discord
+    discord_url = user_prod.username.discord_webhook_url
 
     initial_vals = {'product_nickname': user_prod.product_nickname,
                     'notification_interval': user_prod.notification_interval,

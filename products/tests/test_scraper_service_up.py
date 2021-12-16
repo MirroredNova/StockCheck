@@ -12,7 +12,7 @@ from django.utils import timezone
 
 class ScraperServiceUPTestCases(TestCase):
 
-    product_2 = ('2', 'Best Buy', True, 42.00, 'B012', 'nya2.net', 'Two')
+    product_2 = ('2', 'Best Buy', True, 42.42, 'B012', 'nya2.net', 'Two')
     product_3 = ('3', 'Amazon', True, 0.01, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234', 'nya3.org', 'Three')
     product_4 = ('4', 'Custom Site', False, 0, '', 'nya4.org', 'Four')
 

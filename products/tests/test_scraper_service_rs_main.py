@@ -19,14 +19,14 @@ class ScraperServiceRSMainTestCases(TestCase):
         cls.notification_sender = NotificationSender()
 
     def create_user_products(self, product_data, user_data, prod_per_user):
-        # Format users as: (Username, password, email, discord, phone number)
+        # Format users as: (Username, password, email, discord webhook, phone number)
         # Format products as: (Name, supplier, stock, price, ID, url, nickname, refresh rate)
 
         # Creating an array for easy access of users in order of creation
         users = []
         # User creation
         for each in user_data:
-            User.objects.create(username=each[0], password=each[1], email=each[2], discord=each[3], phone=each[4])
+            User.objects.create(username=each[0], password=each[1], email=each[2], discord_webhook_url=each[3], phone=each[4])
             users.append(User.objects.get(username=each[0]))
 
         # Ensuring that products per user is reasonable, otherwise making it spread across users evenly-ish

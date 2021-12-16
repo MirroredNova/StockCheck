@@ -7,7 +7,7 @@ class AmazonTestCases(TestCase):
 
     def test_out_of_stock(self):
         """An out-of-stock item from Amazon returns the expected information"""
-        in_stock, price, name = amazon_scraper("https://www.amazon.com/ASUS-Graphics-DisplayPort-Military-Grade-Certification/dp/B0985VND1G/ref=sr_1_2?keywords=gpu&qid=1639009409&refinements=p_n_availability%3A2661601011&rnid=2661599011&sr=8-2")
+        in_stock, price, name = amazon_scraper("https://www.amazon.de/-/en/Bohland-Fuchs/dp/B008CX3S9C")
 
         # print("Got: name = %s, price = %f, stock = %s" % (name, price, in_stock))
         self.assertEqual(price, 0, "Out of stock item's price not correct")
@@ -17,10 +17,10 @@ class AmazonTestCases(TestCase):
 
     def test_only_used_in_stock(self):
         """An item available from only a third-party retailer will count as out of stock"""
-        in_stock, price, name = amazon_scraper("https://www.amazon.com/dp/B01MTAAMGZ")
+        in_stock, price, name = amazon_scraper("https://www.amazon.com/dp/B08Y1XHZ7P")
         self.assertFalse(in_stock)
         self.assertEqual(price,0)
-        self.assertEqual(name,'Ibanez SR400EQM Quilted Maple Electric Bass Guitar Dragon Eye Burst')
+        self.assertIn('SR605', name, 'Item counted as out of stock should still return a name.')
 
     def test_in_stock(self):
         """An item available directly through Amazon returns the expected information"""
@@ -32,17 +32,17 @@ class AmazonTestCases(TestCase):
 
     def test_foreign_english_amazon_site(self):
         """A link provided from the .co.uk site returns data as expected (currencies handled at some level)"""
-        in_stock, price, name = amazon_scraper("https://www.amazon.co.uk/Pinch-Nom-Comfort-Food-Satisfying/dp/1529035015/ref=zg-bs_books_1/258-5169357-2871604?pd_rd_w=0Gy1j&pf_rd_p=c3077bff-a471-42bf-a406-b93ec8e1a044&pf_rd_r=FZNTD235B0GQ3MHTGW07&pd_rd_r=b7837f85-d812-4d60-9846-3b383a342652&pd_rd_wg=XUYrf&pd_rd_i=1529035015&psc=1")
+        in_stock, price, name = amazon_scraper("https://www.amazon.co.uk/dp/B008DX8XOG")
 
-        self.assertEqual(price, 10.00, "Available item price not as expected (may have changed, in GBP)")
+        self.assertEqual(price, 77.77, "Available item price not as expected (may have changed, in GBP)")
         self.assertTrue(in_stock, "Available item not recognized as available")
-        self.assertIn("Pinch", name, "Available item not named as expected")
+        self.assertIn("Bach", name, "Available item not named as expected")
 
     def test_foreign_german_amazon_site(self):
         """A link provided from the .de site returns data as expected (currencies handled at some level)"""
         in_stock, price, name = amazon_scraper("https://www.amazon.de/dp/B01AHWW382/")
 
-        self.assertEqual(price, 353.00, "Available item price not as expected (may have changed, in EUR)")
+        self.assertEqual(price, 388.30, "Available item price not as expected (may have changed, in EUR)")
         self.assertTrue(in_stock, "Available item not recognized as available")
         self.assertIn("305E", name, "Available item not named as expected")
 

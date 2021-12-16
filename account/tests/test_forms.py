@@ -93,7 +93,7 @@ class CreateUserFormTest(TestCase):
                 'last_name': LAST,
                 'email': EMAIL,
                 'phone': '1234567890',
-                'discord': 'test#1234',
+                'discord_webhook_url': 'https://discord.com/api/webhooks/920043553957216296/DrQpUJo8zDSodoSHmG05vBUGZKPnlEP9UDny9ChPSGfXsJjK4enJNmxIxZYWCX7mvtqF',
                 'password1': PASSWORD,
                 'password2': PASSWORD}
         form = CreateUserForm(data=data)
@@ -115,11 +115,11 @@ class CreateUserFormTest(TestCase):
                 'first_name': FIRST,
                 'last_name': LAST,
                 'email': EMAIL,
-                'discord': 'test',
+                'discord_webhook_url': 'test',
                 'password1': PASSWORD,
                 'password2': PASSWORD}
         form = CreateUserForm(data=data)
-        self.assertEqual(form.errors['discord'], ['Discord ID must be in the format string#1234'])
+        self.assertEqual(form.errors['discord_webhook_url'], ['Discord ID must be in the format string#1234'])
 
     def test_valid_phone_create_form(self):
         data = {'username': USERNAME,
@@ -137,7 +137,7 @@ class CreateUserFormTest(TestCase):
                 'first_name': FIRST,
                 'last_name': LAST,
                 'email': EMAIL,
-                'discord': 'test#1234',
+                'discord_webhook_url': 'https://discord.com/api/webhooks/920043553957216296/DrQpUJo8zDSodoSHmG05vBUGZKPnlEP9UDny9ChPSGfXsJjK4enJNmxIxZYWCX7mvtqF',
                 'password1': PASSWORD,
                 'password2': PASSWORD}
         form = CreateUserForm(data=data)
@@ -148,7 +148,7 @@ class CreateUserFormTest(TestCase):
                 'first_name': FIRST,
                 'last_name': LAST,
                 'email': EMAIL,
-                'discord': 'test#1234',
+                'discord_webhook_url': 'https://discord.com/api/webhooks/920043553957216296/DrQpUJo8zDSodoSHmG05vBUGZKPnlEP9UDny9ChPSGfXsJjK4enJNmxIxZYWCX7mvtqF',
                 'password1': 'short',
                 'password2': 'short'}
         form = CreateUserForm(data=data)
@@ -159,7 +159,7 @@ class CreateUserFormTest(TestCase):
                 'first_name': FIRST,
                 'last_name': LAST,
                 'email': EMAIL,
-                'discord': 'test#1234',
+                'discord_webhook_url': 'https://discord.com/api/webhooks/920043553957216296/DrQpUJo8zDSodoSHmG05vBUGZKPnlEP9UDny9ChPSGfXsJjK4enJNmxIxZYWCX7mvtqF',
                 'password1': 'password',
                 'password2': 'password'}
         form = CreateUserForm(data=data)
@@ -170,7 +170,7 @@ class CreateUserFormTest(TestCase):
                 'first_name': FIRST,
                 'last_name': LAST,
                 'email': EMAIL,
-                'discord': 'test#1234',
+                'discord_webhook_url': 'https://discord.com/api/webhooks/920043553957216296/DrQpUJo8zDSodoSHmG05vBUGZKPnlEP9UDny9ChPSGfXsJjK4enJNmxIxZYWCX7mvtqF',
                 'password1': '98273640',
                 'password2': '98273640'}
         form = CreateUserForm(data=data)
@@ -181,7 +181,7 @@ class CreateUserFormTest(TestCase):
                 'first_name': FIRST,
                 'last_name': LAST,
                 'email': EMAIL,
-                'discord': 'test#1234',
+                'discord_webhook_url': 'https://discord.com/api/webhooks/920043553957216296/DrQpUJo8zDSodoSHmG05vBUGZKPnlEP9UDny9ChPSGfXsJjK4enJNmxIxZYWCX7mvtqF',
                 'password1': PASSWORD,
                 'password2': 'testpassword2'}
         form = CreateUserForm(data=data)

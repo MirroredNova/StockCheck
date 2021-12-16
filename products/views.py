@@ -1,14 +1,10 @@
 from django.shortcuts import render, redirect
 import datetime
-from products import scrapers
-from products.forms import CreateDashboardBlockSupplier, CreateDashboardBlockAmazon, CreateDashboardBlockBestBuy
-from products.models import Product, UserProduct
-from products.scrapers import amazon_scraper
-from products.scrapers import best_buy_scraper
-from selenium.common.exceptions import InvalidArgumentException
+from products import choices
 from products.forms import *
 from products.models import Product, UserProduct
 from products.scrapers import amazon_scraper, best_buy_scraper
+from products.scrapers.custom_site_scraper import custom_site_scraper
 
 
 def choose_supplier(request):
@@ -28,13 +24,14 @@ def choose_supplier(request):
 def choose_product(request):
     supplier = request.session['chosen_supplier']
     if request.method == 'POST':
-        if supplier == 'Amazon':
+        if supplier == choices.AMAZON:
             form = CreateDashboardBlockAmazon(request.POST)
-        elif supplier == 'Best Buy':
+        elif supplier == choices.BEST_BUY:
             form = CreateDashboardBlockBestBuy(request.POST)
+        elif supplier == choices.CUSTOM:
+            form = CreateDashboardBlockCustom(request.POST)
         else:
             pass
-        #form = CreateDashboardBlockDefault(request.POST)
 
         if form.is_valid():
             product = Product()
@@ -44,11 +41,16 @@ def choose_product(request):
 
             url = form.cleaned_data['product_url']
 
-            if supplier == 'Amazon':
+            if supplier == choices.AMAZON:
                 stock, price, name = amazon_scraper.amazon_scraper(url)
-            elif supplier == 'Best Buy':
+            elif supplier == choices.BEST_BUY:
                 scraper = best_buy_scraper.BestBuyScraper()
                 stock, price, name = scraper.get_price_bestbuy(url)
+            elif supplier == choices.CUSTOM:
+                xpath = form.cleaned_data['product_xpath']
+                product.product_xpath = xpath
+                name, price = 'custom', 0
+                stock = custom_site_scraper(url, xpath, '')
             else:
                 return redirect('/choose_supplier/')
 
@@ -59,6 +61,7 @@ def choose_product(request):
             product.product_name = name
             # product.product_id = form.cleaned_data['product_id']
             product.product_url = url
+
             product.save()
 
             user_prod.username = request.user
@@ -73,10 +76,12 @@ def choose_product(request):
             return redirect('/dashboard/')
     else:
         print(supplier)
-        if supplier == 'Amazon':
+        if supplier == choices.AMAZON:
             form = CreateDashboardBlockAmazon()
-        elif supplier == 'Best Buy':
+        elif supplier == choices.BEST_BUY:
             form = CreateDashboardBlockBestBuy()
+        elif supplier == choices.CUSTOM:
+            form = CreateDashboardBlockCustom()
         else:
             pass
     return render(request, 'choose_product.html', {
@@ -93,14 +98,25 @@ def edit_product(request, data):
                     'notification_method': user_prod.notification_method, }
 
     if request.method == 'POST':
-        form = EditDashboardBlock(request.POST, initial=initial_vals)
+        if product.supplier == choices.CUSTOM:
+            initial_vals['product_xpath'] = product.product_xpath
+            form = EditDashboardBlockCustom(request.POST, initial=initial_vals)
+        else:
+            form = EditDashboardBlock(request.POST, initial=initial_vals)
         if form.is_valid():
             user_prod.product_nickname = form.cleaned_data['product_nickname']
             user_prod.notification_interval = form.cleaned_data['notification_interval']
             user_prod.notification_method = form.cleaned_data['notification_method']
+            if product.supplier == choices.CUSTOM:
+                product.product_xpath = form.cleaned_data['product_xpath']
+                product.save()
             user_prod.save()
     else:
-        form = EditDashboardBlock(initial=initial_vals)
+        if product.supplier == choices.CUSTOM:
+            initial_vals['product_xpath'] = product.product_xpath
+            form = EditDashboardBlockCustom(initial=initial_vals)
+        else:
+            form = EditDashboardBlock(initial=initial_vals)
     return render(request, 'edit_product.html', {
         'name': product.product_name,
         'form': form,

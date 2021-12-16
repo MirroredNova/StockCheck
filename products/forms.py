@@ -54,10 +54,21 @@ class CreateDashboardBlockBestBuy(forms.Form):
             print('Invalid url ')
             raise ValidationError('Invalid URL')
         return url
-            
+
+
+class CreateDashboardBlockCustom(forms.Form):
+    product_nickname = forms.CharField(max_length=400)
+    notification_interval = forms.ChoiceField(choices=NOTIFICATION_INTERVAL)
+    notification_method = forms.ChoiceField(choices=NOTIFICATION_CHOICES)
+    product_url = forms.CharField(max_length=200)
+    product_xpath = forms.CharField(max_length=400)
+
 
 class EditDashboardBlock(forms.Form):
     product_nickname = forms.CharField(max_length=200)
     notification_interval = forms.ChoiceField(choices=NOTIFICATION_INTERVAL)
     notification_method = forms.ChoiceField(choices=NOTIFICATION_CHOICES)
 
+
+class EditDashboardBlockCustom(EditDashboardBlock):
+    product_xpath = forms.CharField(max_length=400)

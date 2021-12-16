@@ -16,7 +16,7 @@ def custom_site_scraper(url, xpath, element):
                 'Accept-Language': 'en-US, en;q=0.5'})
 
     # Many browsers put in a "tbody" tag that doesn't actually exist, so this should pull it out
-    xpath_clean = xpath.replace('tbody', '').replace('//', '/')
+    xpath_clean = xpath.replace('/tbody', '')
 
     # Ensure that some sort of scheme is provided
     if not (url.__contains__("https://") or url.__contains__("http://")):

@@ -114,7 +114,6 @@ class RunScraper():
                         #print('Product needs to update')
                         products_to_update.append(each)
                         products_dict[product] = 1
-
         self.update_products(products_to_update)
         
 

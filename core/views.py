@@ -12,7 +12,4 @@ def home_page(request):
 @login_required(login_url='/login/')
 def dashboard(request):
     product = UserProduct.objects.filter(username=request.user)
-    # userprods = []
-    # for pr in product:
-    #     print(pr.product_name.product_name)
     return render(request, 'dashboard.html', {'UserProduct': product})

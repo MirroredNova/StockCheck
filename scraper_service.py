@@ -81,7 +81,7 @@ class RunScraper():
                     notification.save()
                     if products_dict[product] == 0:
                         print('Product needs to update')
-                        products_to_update.append(product)
+                        products_to_update.append(each)
                         products_dict[product] = 1
 
             elif unit == 'min':
@@ -92,9 +92,9 @@ class RunScraper():
                     notification.save()
                     if products_dict[product] == 0:
                         print('Product needs to update')
-                        products_to_update.append(product)
+                        products_to_update.append(each)
                         products_dict[product] = 1
-
+        print("Got to updating products")
         self.update_products(products_to_update)
         
 

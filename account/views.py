@@ -53,7 +53,7 @@ def management(request):
                     'last_name': request.user.last_name,
                     'email': request.user.email,
                     'phone': request.user.phone,
-                    'discord': request.user.discord}
+                    'discord_webhook_url': request.user.discord_webhook_url}
 
     if request.method == 'POST':
         form = AccountManagementForm(request.POST, initial=initial_vals)
@@ -64,7 +64,7 @@ def management(request):
             u.last_name = fs.last_name
             u.email = fs.email
             u.phone = fs.phone
-            u.discord = fs.discord
+            u.discord_webhook_url = fs.discord_webhook_url
             u.save()
             messages.info(request, 'Your information has been changed successfully!')
             return redirect('/management/')

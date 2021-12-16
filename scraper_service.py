@@ -20,42 +20,53 @@ import requests
 
 class RunScraper():
 
-    def update_products(self, products):
-        for each in products:
+    def update_products(self, user_products):
+        for each in user_products:
             product = each.product
             if product.supplier == 'Best Buy':
                 try:
-                    print(f"Trying to query Best Buy for: {product.product_name}")
+                    #print(f"Trying to query Best Buy for: {product.product_name}")
 
                     b = BestBuyScraper()
                     stock, price, name = b.get_price_bestbuy(product.product_url)
                     if str(price) != str(product.current_price):
                         message = f'Price of {each.product_nickname} changed to {price}'
-                        notification = NotificationQueue(username=each.username,notification_method=each.notification_method,message=message)
-                        notification.save()
+                        if each.notification_method == 'Discord':
+                            discord = each.username.discord_webhook_url
+                            notification = NotificationQueue(username=each.username,notification_method=each.notification_method,message=message,discord_url=discord)
+                            notification.save()
+                        else:
+                            notification = NotificationQueue(username=each.username,notification_method=each.notification_method,message=message)
+                            notification.save()
                     # print(f'Price is {price} stock is {stock}')
                     product.current_price = price
                     product.current_stock = stock
                     product.product_name = name
                     product.last_updated = pytz.utc.localize(datetime.datetime.utcnow())
                     product.save()
-                    print(f'Results were {stock}:{price}:{name}')
+                    #print(f'Results were {stock}:{price}:{name}')
                 except Exception as e:
                     print(f'Query of Best Buy failed: {e}')
             elif product.supplier == 'Amazon':
                 try:
-                    print(f"Trying to query Amazon for: {product.product_name}")
+                    #print(f"Trying to query Amazon for: {product.product_name}")
                     stock, price, name = amazon_scraper(product.product_url)
-                    if str(price) != str(product.current_price):
-                        message = f'Price of {each.product_nickname} changed to {price}'
-                        notification = NotificationQueue(username=each.username,notification_method=each.notification_method,message=message)
-                        notification.save()
+                    if price != product.current_price:
+                        message = f'Price of {each.product_nickname} changed to {price} from {product.current_price}'
+                        #print(message)
+                        if each.notification_method == 'Discord':
+                            discord = each.username.discord_webhook_url
+                            notification = NotificationQueue(username=each.username,notification_method=each.notification_method,message=message,discord_url=discord)
+                            notification.save()
+                        else:
+                            notification = NotificationQueue(username=each.username,notification_method=each.notification_method,message=message)
+                            notification.save()
                     product.current_stock = stock
                     product.current_price = price
                     product.product_name = name
                     product.last_updated = pytz.utc.localize(datetime.datetime.utcnow())
                     product.save()
-                    print(f'Results were {stock}:{price}:{name}')
+                   #print(f'Results were {stock}:{price}:{name}')
                 except Exception as e:
                     print(f'Query of Amazon failed: {e}')
             elif product.supplier == 'Custom Site':
@@ -65,7 +76,7 @@ class RunScraper():
                     product.current_stock = change
                     product.last_updated = pytz.utc.localize(datetime.datetime.utcnow())
                     product.save()
-                    print(f'Result was {change}')
+                    #print(f'Result was {change}')
                 except Exception as e:
                     print(f'Query of custom site failed: {e}')
 
@@ -89,7 +100,7 @@ class RunScraper():
                     
                     
                     if products_dict[product] == 0:
-                        print('Product needs to update')
+                        #print('Product needs to update')
                         products_to_update.append(each)
                         products_dict[product] = 1
 
@@ -100,7 +111,7 @@ class RunScraper():
                     # notification = NotificationQueue(username=each.username,notification_method=each.notification_method)
                     # notification.save()
                     if products_dict[product] == 0:
-                        print('Product needs to update')
+                        #print('Product needs to update')
                         products_to_update.append(each)
                         products_dict[product] = 1
 
@@ -112,7 +123,7 @@ class NotificationSender():
     def send_notifcations(self):
         notifications = NotificationQueue.objects.all()
         for each in notifications:
-            print(f'{each.notification_method}')
+            #print(f'{each.notification_method}')
             if each.notification_method == 'Email':
                 send_to = each.username.email
                 message = each.message
@@ -122,9 +133,13 @@ class NotificationSender():
             elif each.notification_method == 'SMS':
                 pass
             elif each.notification_method == 'Discord':
-                url = "https://discord.com/api/webhooks/920043553957216296/DrQpUJo8zDSodoSHmG05vBUGZKPnlEP9UDny9ChPSGfXsJjK4enJNmxIxZYWCX7mvtqF"
+                #url = "https://discord.com/api/webhooks/920043553957216296/DrQpUJo8zDSodoSHmG05vBUGZKPnlEP9UDny9ChPSGfXsJjK4enJNmxIxZYWCX7mvtqF"
                 data = {"content": each.message}
-                response = requests.post(url,json=data)
+                try:
+                    response = requests.post(each.discord_url,json=data)
+                    #print(response)
+                except Exception as e:
+                    print('error with sending discord message')
             
             each.delete()
 

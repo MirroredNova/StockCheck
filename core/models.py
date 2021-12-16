@@ -8,3 +8,4 @@ class NotificationQueue(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     notification_method = models.CharField(max_length=200)
     message = models.CharField(max_length=400,default='lol')
+    discord_url = models.CharField(max_length=400,blank=True,null=True)

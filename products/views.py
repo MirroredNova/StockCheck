@@ -87,10 +87,12 @@ def choose_product(request):
 def edit_product(request, data):
     user_prod = UserProduct.objects.filter(id=data).first()
     product = user_prod.product
+    discord_url = user_prod.username.discord
 
     initial_vals = {'product_nickname': user_prod.product_nickname,
                     'notification_interval': user_prod.notification_interval,
-                    'notification_method': user_prod.notification_method, }
+                    'notification_method': user_prod.notification_method, 
+                    'discord_url': discord_url,}
 
     if request.method == 'POST':
         form = EditDashboardBlock(request.POST, initial=initial_vals)
@@ -102,7 +104,7 @@ def edit_product(request, data):
     else:
         form = EditDashboardBlock(initial=initial_vals)
     return render(request, 'edit_product.html', {
-        'name': product.product_name,
+        'name': user_prod.product_nickname,
         'form': form,
     })
 

@@ -19,8 +19,8 @@ from products.scrapers.custom_site_scraper import custom_site_scraper
 
 class RunScraper():
 
-    def update_products(self, products):
-        for each in products:
+    def update_products(self, user_products):
+        for each in user_products:
             product = each.product
             if product.supplier == 'Best Buy':
                 try:
@@ -99,7 +99,6 @@ class RunScraper():
                         print('Product needs to update')
                         products_to_update.append(each)
                         products_dict[product] = 1
-        print("Got to updating products")
         self.update_products(products_to_update)
         
 

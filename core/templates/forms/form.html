@@ -11,7 +11,7 @@
                 <td>
                     {% if field.errors %}<span>{{ field.errors }}</span>{% endif %}
                     {{ field }}<br/>
-                    {% if field.help_text %}<span>{{ field.help_text|safe }}</span>{% endif %}
+                    {% if field.help_text %}<span style="font-size: 70%; font-weight: 600">{{ field.help_text|safe }}</span>{% endif %}
                 </td>
             </tr>
         {% endfor %}

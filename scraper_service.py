@@ -25,7 +25,7 @@ class RunScraper():
             product = each.product
             if product.supplier == 'Best Buy':
                 try:
-                    #print(f"Trying to query Best Buy for: {product.product_name}")
+                    # print(f"Trying to query Best Buy for: {product.product_name}")
 
                     b = BestBuyScraper()
                     stock, price, name = b.get_price_bestbuy(product.product_url)
@@ -44,12 +44,12 @@ class RunScraper():
                     product.product_name = name
                     product.last_updated = pytz.utc.localize(datetime.datetime.utcnow())
                     product.save()
-                    #print(f'Results were {stock}:{price}:{name}')
+                    # print(f'Results were {stock}:{price}:{name}')
                 except Exception as e:
                     print(f'Query of Best Buy failed: {e}')
             elif product.supplier == 'Amazon':
                 try:
-                    #print(f"Trying to query Amazon for: {product.product_name}")
+                    # print(f"Trying to query Amazon for: {product.product_name}")
                     stock, price, name = amazon_scraper(product.product_url)
                     if float(price) != float(product.current_price):
                         message = f'Price of {each.product_nickname} changed to {price} from {product.current_price}'
@@ -71,7 +71,7 @@ class RunScraper():
                     print(f'Query of Amazon failed: {e}')
             elif product.supplier == 'Custom Site':
                 try:
-                    print(f"Trying to query custom site for: {product.product_url}")
+                    # print(f"Trying to query custom site for: {product.product_url}")
                     change = custom_site_scraper(product.product_url, product.product_xpath, product.product_element)
                     product.current_stock = change
                     product.last_updated = pytz.utc.localize(datetime.datetime.utcnow())

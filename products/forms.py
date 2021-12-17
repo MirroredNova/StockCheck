@@ -61,8 +61,9 @@ class CreateDashboardBlockCustom(forms.Form):
     product_nickname = forms.CharField(max_length=400)
     notification_interval = forms.ChoiceField(choices=NOTIFICATION_INTERVAL)
     notification_method = forms.ChoiceField(choices=NOTIFICATION_CHOICES)
-    product_url = forms.CharField(max_length=200)
-    product_xpath = forms.CharField(max_length=400)
+    product_url = forms.CharField(max_length=200, label='Site URL')
+    product_xpath = forms.CharField(max_length=400, label='Element XPath', help_text='The XPath pointing to the element indicating a product is out of stock, or that you want to see change.')
+    product_element = forms.CharField(max_length=200, required=False, label='Element Contents', help_text='The HTML contents of the element the provided XPath points to.')
 
 
 class EditDashboardBlock(forms.Form):
@@ -79,4 +80,7 @@ class EditDashboardBlock(forms.Form):
 
 
 class EditDashboardBlockCustom(EditDashboardBlock):
-    product_xpath = forms.CharField(max_length=400)
+    product_xpath = forms.CharField(max_length=400, label='Element XPath',
+                                    help_text='The XPath pointing to the element indicating a product is out of stock, or that you want to see change.')
+    product_element = forms.CharField(max_length=200, required=False, label='Element Contents',
+                                      help_text='The HTML contents of the element the provided XPath points to.')

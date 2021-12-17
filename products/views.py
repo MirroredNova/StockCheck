@@ -48,7 +48,9 @@ def choose_product(request):
                 stock, price, name = scraper.get_price_bestbuy(url)
             elif supplier == choices.CUSTOM:
                 xpath = form.cleaned_data['product_xpath']
+                element = form.cleaned_data['product_element']
                 product.product_xpath = xpath
+                product.product_element = element
                 name, price = 'custom', 0
                 stock = custom_site_scraper(url, xpath, '')
             else:
@@ -102,6 +104,7 @@ def edit_product(request, data):
     if request.method == 'POST':
         if product.supplier == choices.CUSTOM:
             initial_vals['product_xpath'] = product.product_xpath
+            initial_vals['product_element'] = product.product_element
             form = EditDashboardBlockCustom(request.POST, initial=initial_vals)
         else:
             form = EditDashboardBlock(request.POST, initial=initial_vals)
@@ -111,11 +114,15 @@ def edit_product(request, data):
             user_prod.notification_method = form.cleaned_data['notification_method']
             if product.supplier == choices.CUSTOM:
                 product.product_xpath = form.cleaned_data['product_xpath']
+                product.product_element = form.cleaned_data['product_element']
                 product.save()
             user_prod.save()
+            return redirect('/dashboard/')
+
     else:
         if product.supplier == choices.CUSTOM:
             initial_vals['product_xpath'] = product.product_xpath
+            initial_vals['product_element'] = product.product_element
             form = EditDashboardBlockCustom(initial=initial_vals)
         else:
             form = EditDashboardBlock(initial=initial_vals)

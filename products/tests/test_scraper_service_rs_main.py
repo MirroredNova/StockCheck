@@ -19,14 +19,14 @@ class ScraperServiceRSMainTestCases(TestCase):
         cls.notification_sender = NotificationSender()
 
     def create_user_products(self, product_data, user_data, prod_per_user):
-        # Format users as: (Username, password, email, discord, phone number)
+        # Format users as: (Username, password, email, discord webhook, phone number)
         # Format products as: (Name, supplier, stock, price, ID, url, nickname, refresh rate)
 
         # Creating an array for easy access of users in order of creation
         users = []
         # User creation
         for each in user_data:
-            User.objects.create(username=each[0], password=each[1], email=each[2], discord=each[3], phone=each[4])
+            User.objects.create(username=each[0], password=each[1], email=each[2], discord_webhook_url=each[3], phone=each[4])
             users.append(User.objects.get(username=each[0]))
 
         # Ensuring that products per user is reasonable, otherwise making it spread across users evenly-ish
@@ -84,33 +84,30 @@ class ScraperServiceRSMainTestCases(TestCase):
         self.assertGreater(best_buy_object.last_updated, acceptable_time,
                             "Updating custom product should change the timestamp")
 
-    # def test_main_large_mixed(self):
-    #     """Running main on a set of UserProducts with one from each supplier should work as anticipated."""
-    #     # Mocking update_products
-    #     self.run_scraper.update_products = MagicMock(side_effect=self.fake_update_products)
-    #
-    #     # Setting up database
-    #     product_data = [self.product_2, self.product_3, self.product_4]
-    #     user_data = [('User', 'thIsIsAP@ssword', 'nya@nya.org', '', '')]
-    #     self.create_user_products(product_data, user_data, 3)
-    #
-    #     # Storing old version of product object's timestamp data
-    #     original_timestamp_BB = Product.objects.get(product_name='2').last_updated
-    #     original_timestamp_amazon = Product.objects.get(product_name='3').last_updated
-    #     original_timestamp_custom = Product.objects.get(product_name='4').last_updated
-    #
-    #     # Running product update
-    #     RunScraper.main(self.run_scraper)
-    #
-    #     # Grabbing full object and testing for changes
-    #     best_buy_object = Product.objects.get(product_name='2')
-    #     amazon_object = Product.objects.get(product_name='3')
-    #     custom_object = Product.objects.get(product_name='4')
-    #
-    #     # Check that update_products ran properly, which updates timestamps in UserProducts
-    #     self.assertNotEqual(best_buy_object.last_updated, original_timestamp_BB,
-    #                         "Updating Best Buy product should change the timestamp")
-    #     self.assertNotEqual(amazon_object.last_updated, original_timestamp_amazon,
-    #                         "Updating Amazon product should change the timestamp")
-    #     self.assertNotEqual(custom_object.last_updated, original_timestamp_custom,
-    #                         "Updating custom product should change the timestamp")
+    def test_main_large_mixed(self):
+        """Running main on a set of UserProducts with one from each supplier should work as anticipated."""
+        # Mocking update_products
+        self.run_scraper.update_products = MagicMock(side_effect=self.fake_update_products)
+
+        # Setting up database
+        product_data = [self.product_2, self.product_3, self.product_4,
+                        ('5', 'Best Buy', False, 12000.00, '4295', 'bestbuy.what', 'Five', '1_min'),
+                        ('6', 'Custom Site', True, 0, '', 'nscalesupply.com', 'Six', '1_hour'),
+                        ('7', 'Amazon', True, 10.00, 'ABCDEF', 'nya32.org', 'Seven', '10_min'),
+                        ('8', 'Best Buy', False, 12300.00, '4295', 'bestbuy.what', 'Eight', '10_min'),
+                        ('9', 'Custom Site', True, 0, '', 'nscalesupply2.com', 'Nine', '10_min'),
+                        ('10', 'Amazon', True, 10.60, 'ABCDE', 'nya32.org', 'Ten', '1_min')
+                        ]
+        user_data = [('User', 'thIsIsAP@ssword', 'nya@nya.org', '', ''),
+                     ('User2', 'thIsIsAlSoAP@ssword', 'nya2@nya.org', '', ''),
+                     ('User3', 'thIsIsDefIniTeLyAP@ssword', 'nya3@nya.org', '', '')]
+        self.create_user_products(product_data, user_data, 3)
+
+        # Running product update
+        RunScraper.main(self.run_scraper)
+
+        # Checking that
+        acceptable_time = datetime.now(tz=timezone.utc) - timedelta(minutes=1)
+        for each in UserProduct.objects.all():
+            self.assertGreater(each.product.last_updated, acceptable_time,
+                               f'Updating product "{each.product_nickname}" should change the timestamp')

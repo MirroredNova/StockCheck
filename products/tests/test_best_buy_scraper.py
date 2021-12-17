@@ -12,8 +12,9 @@ class BestBuyTestCases(TestCase):
 
     def test_sold_out(self):
         """A sold-out item from BB returns the expected information"""
-        in_stock, price, name = BestBuyScraper.get_price_bestbuy(self.scraper,"https://www.bestbuy.com/site/cookie-dvd-1989"
-                                                                 "/18959412.p?skuId=18959412")
+        in_stock, price, name =\
+            BestBuyScraper.get_price_bestbuy(self.scraper,
+                                             "https://www.bestbuy.com/site/astoria-lp-vinyl/35039409.p?skuId=35039409")
 
         # print("Got: name = %s, price = %f, stock = %s" % (name, price, in_stock))
         self.assertEqual(price, 0, "Sold-out item's price not correct")

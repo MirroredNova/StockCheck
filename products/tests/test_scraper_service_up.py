@@ -1,18 +1,14 @@
 from django.test import TestCase
 from unittest.mock import patch
-from unittest.mock import MagicMock
-
-import scraper_service
 from scraper_service import RunScraper
 from scraper_service import NotificationSender
-from scraper_service import main
 from products.models import Product, UserProduct, User
 from datetime import datetime
 from django.utils import timezone
 
 class ScraperServiceUPTestCases(TestCase):
 
-    product_2 = ('2', 'Best Buy', True, 42.00, 'B012', 'nya2.net', 'Two')
+    product_2 = ('2', 'Best Buy', True, 42.42, 'B012', 'nya2.net', 'Two')
     product_3 = ('3', 'Amazon', True, 0.01, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234', 'nya3.org', 'Three')
     product_4 = ('4', 'Custom Site', False, 0, '', 'nya4.org', 'Four')
 
@@ -182,7 +178,6 @@ class ScraperServiceUPTestCases(TestCase):
                         "Update to custom product should have changed site condition to changed")
         self.assertNotEqual(custom_object.last_updated, original_timestamp_custom,
                             "Updating custom product should change the timestamp")
-
 
 
 

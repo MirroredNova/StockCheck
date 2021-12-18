@@ -18,7 +18,10 @@ class CreateUserForm(UserCreationForm):
             return self.cleaned_data['discord_webhook_url']
         url = self.cleaned_data['discord_webhook_url']
         data = {"content": 'Congrats your webhook url is valid'}
-        response = requests.post(url,json=data)
+        try:
+            response = requests.post(url, json=data)
+        except MissingSchema as e:
+            raise ValidationError('Invalid webhook url')
         if response.status_code != 204:
             raise ValidationError('Invalid webhook url')
         return url

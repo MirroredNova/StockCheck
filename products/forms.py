@@ -28,7 +28,7 @@ class CreateDashboardBlockAmazon(forms.Form):
 
     def clean_product_url(self):
         url = self.cleaned_data['product_url']
-        if 'amazon' not in url:
+        if 'amazon' not in url and 'amzn' not in url:
             print('Invalid url ')
             raise ValidationError('Invalid URL')
         try:

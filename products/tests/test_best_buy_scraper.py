@@ -1,5 +1,4 @@
 from django.test import TestCase
-import sys
 from products.scrapers.best_buy_scraper import BestBuyScraper
 from selenium.common.exceptions import InvalidArgumentException, NoSuchElementException
 
@@ -16,11 +15,8 @@ class BestBuyTestCases(TestCase):
             BestBuyScraper.get_price_bestbuy(self.scraper,
                                              "https://www.bestbuy.com/site/astoria-lp-vinyl/35039409.p?skuId=35039409")
 
-        # print("Got: name = %s, price = %f, stock = %s" % (name, price, in_stock))
         self.assertEqual(price, 0, "Sold-out item's price not correct")
         self.assertFalse(in_stock, "Sold-out item appears in-stock")
-        # Ideally this data should still be returned when an item's listing exists
-        # self.assertIn("Cookie", name, "Out-of-stock item's name not found: ")
 
     def test_high_demand(self):
         """A high-demand (backordered) item from BB returns the expected information"""
@@ -62,14 +58,12 @@ class BestBuyTestCases(TestCase):
         self.assertIn("ZX", name, "Out-of-stock item's name not found: ")
 
     def test_non_best_buy_site(self):
-        """A site other than BB should throw a NoSuchElementException """
+        """A site other than BB should throw an InvalidArgumentException"""
         # Yes I know aliexpress sucks, I was looking for a site with a vaguely Best Buy-like format
-        self.assertRaises(NoSuchElementException,self.scraper.get_price_bestbuy, "https://www.aliexpress.com/item/32958852196.html")
-        
-        # Exact implementation of naming aspect is up for debate, should probably be an empty string
+        self.assertRaises(InvalidArgumentException,self.scraper.get_price_bestbuy, "https://www.aliexpress.com/item/32958852196.html")
 
     def test_invalid_link(self):
-        """An invalid BB link results in a graceful failure with no uncaught errors"""
-        self.assertRaises(InvalidArgumentException, self.scraper.get_price_bestbuy, 'https://www.bestbuy.com/8618232')
+        """An invalid BB link should throw a NoSuchElementException"""
+        self.assertRaises(NoSuchElementException, self.scraper.get_price_bestbuy, 'https://www.bestbuy.com/8618232')
 
     

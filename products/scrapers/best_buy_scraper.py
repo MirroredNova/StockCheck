@@ -1,5 +1,5 @@
 from selenium import webdriver
-import os
+from selenium.common.exceptions import InvalidArgumentException, NoSuchElementException
 
 from StockCheck.settings import CHROMEDRIVER_PATH
 
@@ -28,29 +28,34 @@ class BestBuyScraper:
     # @return: Returns True if the item is in stock otherwise false
     # @return: Returns a float of the price of the item and if out of stock 0
     # @return: Returns a string of the product name, if found (currently just blank for testing)
+    # @throws: InvalidArgumentException if url is not for a Best Buy site
+    # @throws: NoSuchElementException if page not as expected
     def get_price_bestbuy(self, url):
         # Ensure that some sort of scheme is provided
         if not (url.__contains__("https://") or url.__contains__("http://")):
             url = "https://" + url
+        if 'bestbuy.com' not in url:
+            raise InvalidArgumentException('Provided URL does not appear to be for Best Buy')
 
         driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, options=self.options)
 
         driver.get(url)
         driver.implicitly_wait(self.implicit_wait_interval)
-        # driver.get_screenshot_as_file('screenshot.png')
 
-        price_element = driver.find_element_by_class_name('priceView-customer-price')
-        price = price_element.find_element_by_tag_name('span').text
-        name_element = driver.find_element_by_class_name('heading-5')
-        name = name_element.text
+        try:
+            price_element = driver.find_element_by_class_name('priceView-customer-price')
+            price = price_element.find_element_by_tag_name('span').text
+            name_element = driver.find_element_by_class_name('heading-5')
+            name = name_element.text
 
-        temp_price = price.replace('$', '')
-        temp_price = temp_price.replace(',','')
-        float_price = float(temp_price)
+            temp_price = price.replace('$', '')
+            temp_price = temp_price.replace(',', '')
+            float_price = float(temp_price)
 
+            add_cart_element = driver.find_element_by_class_name('add-to-cart-button')
+            if add_cart_element.text == "Sold Out":
+                return False, 0, name
 
-        add_cart_element = driver.find_element_by_class_name('add-to-cart-button')
-        if add_cart_element.text == "Sold Out":
-            return False, 0, name
-        
-        return True, float_price, name
+            return True, float_price, name
+        except Exception:
+            raise NoSuchElementException('Expected elements not found on page.')

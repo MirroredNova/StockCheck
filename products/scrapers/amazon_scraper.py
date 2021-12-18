@@ -4,7 +4,6 @@ from requests.exceptions import MissingSchema
 
 
 def amazon_scraper(url):
-    # id_search = "availability"
     HEADERS = ({'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64)}'
                                 'AppleWebKit/537.36 (KHTML, like Gecko))'
                                 'Chrome/44.0.2403.157 Safari/537.36',
@@ -24,7 +23,6 @@ def amazon_scraper(url):
     except AttributeError as e:
         raise MissingSchema
     if len(buy_now_button) == 0 and len(add_cart_button) == 0:
-        print('No buy now button')
         stock = False
         price = 0
         return stock, price, name
@@ -41,8 +39,6 @@ def amazon_scraper(url):
     price = price.replace('$', '')
     price = price.replace(',', '')
     price = float(price)
-    #soup = BeautifulSoup(r.content, features="html.parser")
-    #stock = soup.find('span', {'id': 'submit.buy-now'}).text.strip()
     if not stock:
         return False, price, name
     return True, price, name
